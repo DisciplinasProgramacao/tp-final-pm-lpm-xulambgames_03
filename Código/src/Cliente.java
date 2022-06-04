@@ -18,6 +18,11 @@ public class Cliente implements IValoravel  {
         this.valoravel = valoravel;
         compras = new ArrayList<Compra>();
     }
+
+    public void adicionarCompra(Compra compra) {
+        compras.add(compra);
+
+    }
     
     public void calculaMensalidade(){
         
