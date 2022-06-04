@@ -1,4 +1,4 @@
-public class Cliente implements IValoravel { 
+public class Cliente implements IValoravel  {
 
     private String nome;
     private String nomeDeUsuario;

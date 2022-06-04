@@ -11,7 +11,7 @@ public class Compra {
         this.valorTotal = valorTotal;
         this.meioDePagamento = meioDePagamento;
         this.desconto = desconto;
-        this.dataDeCompra = dataDeCompra;
+        this.dataDeCompra = LocalDate.now();
     }
 
 
