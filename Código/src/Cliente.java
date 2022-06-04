@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente implements IValoravel  {
 
     private String nome;
@@ -5,6 +8,7 @@ public class Cliente implements IValoravel  {
     private String senha;
     private String email;
     private IValoravel valoravel;
+    private List<Compra> compras;
     
     public Cliente(String nome, String nomeDeUsuario, String senha, String email, IValoravel valoravel) {
         this.nome = nome;
@@ -12,6 +16,7 @@ public class Cliente implements IValoravel  {
         this.senha = senha;
         this.email = email;
         this.valoravel = valoravel;
+        compras = new ArrayList<Compra>();
     }
     
     public void calculaMensalidade(){
@@ -23,7 +28,9 @@ public class Cliente implements IValoravel  {
 
 
 
-
+    public List<Compra> getCompras() {
+        return compras;
+    }
 
     public String getNome() {
         return nome;
