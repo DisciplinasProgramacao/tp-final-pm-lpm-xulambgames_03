@@ -1,4 +1,6 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 
 
@@ -9,12 +11,13 @@ public class Compra implements Serializable {
     private String meioDePagamento;
     private double desconto;
     private LocalDate dataDeCompra;
+    private List <Jogo> listaDeJogos;
     
-    public Compra(double valorTotal, String meioDePagamento, double desconto, LocalDate dataDeCompra) {
-        this.valorTotal = valorTotal;
+    public Compra(String meioDePagamento) {
         this.meioDePagamento = meioDePagamento;
-        this.desconto = desconto;
         this.dataDeCompra = LocalDate.now();
+        this.listaDeJogos = new ArrayList<>();
+        valorTotal=0;
     }
 
 

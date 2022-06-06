@@ -7,16 +7,14 @@ public class Cliente implements IValoravel  {
     private String nomeDeUsuario;
     private String senha;
     private String email;
-    private IValoravel valoravel;
     private List<Compra> compras;
     private TipoCliente tipo;
     
-    public Cliente(String nome, String nomeDeUsuario, String senha, String email, IValoravel valoravel, TipoCliente tipo) {
+    public Cliente(String nome, String nomeDeUsuario, String senha, String email, TipoCliente tipo) {
         this.nome = nome;
         this.nomeDeUsuario = nomeDeUsuario;
         this.senha = senha;
         this.email = email;
-        this.valoravel = valoravel;
         compras = new ArrayList<Compra>();
         this.tipo = tipo;
     }
@@ -26,8 +24,8 @@ public class Cliente implements IValoravel  {
 
     }
     
-    public void calculaMensalidade(){
-     
+    public double calculaMensalidade(){
+     return this.tipo.getMensalidade();
     }
 
     public List<Compra> getCompras() {
@@ -66,18 +64,12 @@ public class Cliente implements IValoravel  {
         this.email = email;
     }
 
-    public IValoravel getValoravel() {
-        return valoravel;
-    }
-
-    public void setValoravel(IValoravel valoravel) {
-        this.valoravel = valoravel;
-    }
-
     public TipoCliente getTipo() {
         return tipo;
     }
-    
+    public double getDesconto(){
+        return this.tipo.getDesconto();
+       }
 
     
 }
