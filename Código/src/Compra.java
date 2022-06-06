@@ -1,8 +1,11 @@
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Compra {
 
-    private double valorTotal;
+public class Compra implements Serializable {
+
+    private static final long serialVersionUID = 20221L;
+   private double valorTotal;
     private String meioDePagamento;
     private double desconto;
     private LocalDate dataDeCompra;

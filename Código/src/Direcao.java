@@ -10,12 +10,12 @@ public class Direcao {
         return 0; 
     }
 
-    public Jogos jogoMaisVendidos(){
+    public Jogo jogoMaisVendidos(){
 
         return null;   
     }
 
-    public Jogos jogoMenosVendido(){
+    public Jogo jogoMenosVendido(){
 
         return null; 
     }

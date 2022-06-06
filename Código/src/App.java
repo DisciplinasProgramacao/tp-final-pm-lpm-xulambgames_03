@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
+
 public class App {
 
     private static int opcao;
     private static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
-
-        
+    
         do {
             System.out.println("\n                  *****      Xulamb Games 03      *****                ");
             System.out.println("       ================================================================= ");

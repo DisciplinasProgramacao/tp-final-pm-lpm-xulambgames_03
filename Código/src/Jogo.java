@@ -1,14 +1,14 @@
-public class Jogos {
+public class Jogo {
 
     private String titulo;
     private double preco;
     private String genero;
     private int classificacaoIndicativa;
     private String produtora;
-    private CategoriaJogos categoria;
+    private CategoriaJogo categoria;
     
-    public Jogos(String titulo, double preco, String genero, int classificacaoIndicativa, String produtora,
-            CategoriaJogos categoria) {
+    public Jogo(String titulo, double preco, String genero, int classificacaoIndicativa, String produtora,
+            CategoriaJogo categoria) {
         this.titulo = titulo;
         this.preco = preco;
         this.genero = genero;
@@ -38,7 +38,7 @@ public class Jogos {
         return produtora;
     }
 
-    public CategoriaJogos getCategoria() {
+    public CategoriaJogo getCategoria() {
         return categoria;
     }
 

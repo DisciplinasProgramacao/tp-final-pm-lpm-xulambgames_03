@@ -9,14 +9,16 @@ public class Cliente implements IValoravel  {
     private String email;
     private IValoravel valoravel;
     private List<Compra> compras;
+    private TipoCliente tipo;
     
-    public Cliente(String nome, String nomeDeUsuario, String senha, String email, IValoravel valoravel) {
+    public Cliente(String nome, String nomeDeUsuario, String senha, String email, IValoravel valoravel, TipoCliente tipo) {
         this.nome = nome;
         this.nomeDeUsuario = nomeDeUsuario;
         this.senha = senha;
         this.email = email;
         this.valoravel = valoravel;
         compras = new ArrayList<Compra>();
+        this.tipo = tipo;
     }
 
     public void adicionarCompra(Compra compra) {
@@ -25,13 +27,8 @@ public class Cliente implements IValoravel  {
     }
     
     public void calculaMensalidade(){
-        
+     
     }
-
-
-
-
-
 
     public List<Compra> getCompras() {
         return compras;
@@ -75,6 +72,10 @@ public class Cliente implements IValoravel  {
 
     public void setValoravel(IValoravel valoravel) {
         this.valoravel = valoravel;
+    }
+
+    public TipoCliente getTipo() {
+        return tipo;
     }
     
 
