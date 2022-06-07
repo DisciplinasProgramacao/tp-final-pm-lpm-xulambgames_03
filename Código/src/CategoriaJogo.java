@@ -1,19 +1,26 @@
 
 public enum CategoriaJogo {
 
-    LANCAMENTOS(1.1),
-    PREMIUM(0.0),
-    REGULARES(0.8),
-    PROMOCOES(0.4);
+    LANCAMENTOS(1.1, 0.0),
+    PREMIUM(0.0, 0.0),
+    REGULARES(0.7,1),
+    PROMOCOES(0.3,0.5);
 
-    private double precificacao;
-    
-    private CategoriaJogo(double precificacao) {
-        this.precificacao = precificacao;
+    private double descontoMin;
+    private double descontoMax;
+
+    private CategoriaJogo(double descontoMin, double descontoMax) {
+        this.descontoMin = descontoMin;
+        this.descontoMax = descontoMax;
     }
 
-    public double getPrecificacao(){
-        return precificacao;
+    public double getDescontoMax() {
+        return descontoMax;
     }
+
+    public double getDescontoMin() {
+        return descontoMin;
+    }
+
 
 }

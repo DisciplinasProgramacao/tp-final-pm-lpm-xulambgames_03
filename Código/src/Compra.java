@@ -20,18 +20,6 @@ public class Compra implements Serializable {
         valorTotal=0;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public double getValorTotal() {
         return valorTotal;
     }
@@ -58,6 +46,11 @@ public class Compra implements Serializable {
 
     public LocalDate getDataDeCompra() {
         return dataDeCompra;
+    }
+
+
+    public List<Jogo> getListaDeJogos() {
+        return listaDeJogos;
     }
 
     

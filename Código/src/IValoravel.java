@@ -1,5 +1,7 @@
 
 public interface IValoravel {
 
-    void calculaMensalidade();
+    double calculaMensalidade();
+
+    double getDesconto(double compra);
 }
