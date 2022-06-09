@@ -1,7 +1,7 @@
 
 public enum CategoriaJogo {
 
-    LANCAMENTOS(1.1, 0.0),
+    LANCAMENTOS(1.1, 1.1),
     PREMIUM(0.0, 0.0),
     REGULARES(0.7,1),
     PROMOCOES(0.3,0.5);
