@@ -16,14 +16,16 @@ public class Jogo {
         this.produtora = produtora;
         this.categoria = categoria;
     }
-    
 
+    public double getPreco(double correcao) { 
+        if (correcao >= this.categoria.getDescontoMin() && correcao <= this.categoria.getDescontoMax()){
+            preco *= correcao;
+        }
+        return preco;
+    }
+    
     public String getTitulo() {
         return titulo;
-    }
-
-    public double getPreco() {
-        return preco;
     }
 
     public String getGenero() {
@@ -41,7 +43,6 @@ public class Jogo {
     public CategoriaJogo getCategoria() {
         return categoria;
     }
-
 
     public void setPreco(double preco) {
         this.preco = preco;
