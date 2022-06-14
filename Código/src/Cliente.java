@@ -1,22 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente implements IValoravel  {
+public class Cliente {
 
     private String nome;
     private String nomeDeUsuario;
     private String senha;
     private String email;
     private List<Compra> compras;
-    private TipoCliente tipo;
+    private IValoravel tipo;
     
-    public Cliente(String nome, String nomeDeUsuario, String senha, String email, TipoCliente tipo) {
+    public Cliente(String nome, String nomeDeUsuario, String senha, String email) {
         this.nome = nome;
         this.nomeDeUsuario = nomeDeUsuario;
         this.senha = senha;
         this.email = email;
+        this.tipo = null;
         compras = new ArrayList<Compra>();
-        this.tipo = tipo;
+        
     }
 
     public void adicionarCompra(Compra compra) {
@@ -25,7 +26,7 @@ public class Cliente implements IValoravel  {
     }
     
     public double calculaMensalidade(){
-     return this.tipo.getMensalidade();
+        return this.tipo.calculaMensalidade();
     }
 
     public List<Compra> getCompras() {
@@ -64,12 +65,7 @@ public class Cliente implements IValoravel  {
         this.email = email;
     }
 
-    public TipoCliente getTipo() {
-        return tipo;
-    }
-    public double getDesconto(){
-        return this.tipo.getDesconto();
-       }
-
-    
+    public double getDesconto(double compra){
+        return this.tipo.getDesconto(compra);
+       }   
 }
