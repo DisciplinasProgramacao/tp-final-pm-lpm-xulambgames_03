@@ -1,6 +1,8 @@
+package compra;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import jogo.Jogo;
 import java.io.Serializable;
 
 

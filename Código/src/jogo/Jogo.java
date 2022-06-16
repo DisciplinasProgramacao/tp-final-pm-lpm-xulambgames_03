@@ -1,3 +1,4 @@
+package jogo;
 public class Jogo {
 
     private String titulo;

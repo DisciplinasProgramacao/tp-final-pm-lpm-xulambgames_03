@@ -1,5 +1,7 @@
+package cliente;
 import java.util.ArrayList;
 import java.util.List;
+import compra.Compra;
 
 public class Cliente {
 
@@ -8,14 +10,12 @@ public class Cliente {
     private String senha;
     private String email;
     private List<Compra> compras;
-    private IValoravel tipo;
     
     public Cliente(String nome, String nomeDeUsuario, String senha, String email) {
         this.nome = nome;
         this.nomeDeUsuario = nomeDeUsuario;
         this.senha = senha;
         this.email = email;
-        this.tipo = null;
         compras = new ArrayList<Compra>();
         
     }
@@ -24,10 +24,7 @@ public class Cliente {
         compras.add(compra);
 
     }
-    
-    public double calculaMensalidade(){
-        return this.tipo.calculaMensalidade();
-    }
+
 
     public List<Compra> getCompras() {
         return compras;
@@ -64,8 +61,5 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public double getDesconto(double compra){
-        return this.tipo.getDesconto(compra);
-       }   
+  
 }
