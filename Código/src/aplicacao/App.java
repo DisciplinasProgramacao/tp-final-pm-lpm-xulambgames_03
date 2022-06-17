@@ -65,7 +65,6 @@ public class App {
         } while (opcao != 0);
     }
 
-    // private Map<Cliente> clientes;
     // DAO padrão de projeto pra salvar arquivo
 
 	public double valorMensalVendido() { // Valor do mes atual
