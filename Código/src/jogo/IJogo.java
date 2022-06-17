@@ -1,10 +1,8 @@
 package jogo;
 
-public interface IJogo {
+import java.io.Serializable;
 
-	// public JogoFactory jogoFactory; // veio com o astah
-
-
+public interface IJogo extends Serializable{
 
 	public abstract double calcularPreco();
 

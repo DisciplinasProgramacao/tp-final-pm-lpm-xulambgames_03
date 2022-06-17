@@ -1,12 +1,9 @@
 package iterator;
 import compra.Compra;
 
-public interface IteratorCompra {
+public interface IteratorCompra { //Utilizando para gerar o extrato.
 
-	// private Compra compra; // não pode ser private // veio com o astah
-	// private Cliente cliente; // não pode ser private // veio com o astah
-
-	public abstract boolean hasNext();
-	public abstract Compra getNext();
+	boolean hasNext();
+	Compra getNext();
 
 }

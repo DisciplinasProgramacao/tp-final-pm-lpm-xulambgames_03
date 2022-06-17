@@ -1,18 +1,23 @@
 package iterator;
-import java.util.List;
+
+import java.util.Queue;
 
 import compra.Compra;
 
-public class ImplementedItaratorCompra implements IteratorCompra {
+public class ImplementedItaratorCompra implements IteratorCompra { //Utilizando para gerar o extrato.
 
-	private List<Compra> compras;
+	private Queue<Compra> compras;
 
-	public Compra getNext() {
-		return null;
+	public ImplementedItaratorCompra(Queue<Compra> compras) {
+		this.compras = compras;
 	}
 
-	public boolean hasNext() {
-		return false;
+	public Compra getNext() { // Pilha de compras, removendo o próximo da fila e retornando-a.
+		return compras.remove();
+	}
+
+	public boolean hasNext() { // Pilha de compras, verifica se ainda existe um elemento na pilha.
+		return !compras.isEmpty();
 	}
 
 }

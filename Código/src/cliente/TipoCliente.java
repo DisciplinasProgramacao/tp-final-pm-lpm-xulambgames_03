@@ -6,8 +6,5 @@ public enum TipoCliente {
 	EMPOLGADOS,
 	FANATICOS;
 
-	private Cliente cliente;
-
-
 
 }

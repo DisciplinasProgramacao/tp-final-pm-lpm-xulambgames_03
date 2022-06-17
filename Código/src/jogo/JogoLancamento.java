@@ -2,10 +2,13 @@ package jogo;
 
 public class JogoLancamento extends Jogo {
 
-	private double ACRESCIMO = 0.1;
-
-	public double calcularPreco() {
-		return 0;
+	public JogoLancamento(String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) {
+		super(titulo, preco, genero, classificacaoIndicativa, produtora);
 	}
 
+	private double ACRESCIMO = 1.1;
+
+	public double calcularPreco() {
+		return super.getPreco()*ACRESCIMO;
+	}
 }

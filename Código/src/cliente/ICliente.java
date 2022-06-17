@@ -1,10 +1,12 @@
 package cliente;
 
-public interface ICliente {
+import java.io.Serializable;
 
-	 // private Cliente Factory cliente Factory; // veio com o astah
+public interface ICliente extends Serializable{
 
-	public abstract double calculaMensalidade();
-	public abstract double calculaDesconto();
+	double calculaMensalidade();
+	double calculaDesconto();
+
+
 
 }
