@@ -1,13 +1,17 @@
 package aplicacao;
-import java.util.Collection;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 import cliente.Cliente;
+import compra.Compra;
+import jogo.IJogo;
 import jogo.Jogo;
 
-
 public class App {
+    
+    static List<Cliente> listaCliente;
+    static List<IJogo> listaJogo;
 
     private static int opcao;
     private static Scanner sc = new Scanner(System.in);
@@ -23,7 +27,7 @@ public class App {
             System.out.println("      |    4. Histórico de um cliente específico                        |");
             System.out.println("      |    5. Calcular o valor de uma nova compra                       |");
             System.out.println("      |                                                                 |");
-            System.out.println("      |    0. Sair                                                      |");
+            System.out.println("      |    0. Salvar e sair                                             |");
             System.out.println("      *=================================================================*\n");
             System.out.print("Informe uma opcao: ");
 
@@ -62,15 +66,18 @@ public class App {
     }
 
     // private Map<Cliente> clientes;
+    // DAO padrão de projeto pra salvar arquivo
 
-	private Collection<Jogo> jogo;
-
-	public double valorMensalVendido() {
-		return 0;
+	public double valorMensalVendido() { // Valor do mes atual
+        int mesReferencia = LocalDate.now().getMonthValue();
+        return listaCliente.stream().mapToDouble(c -> c.getCompras().stream().filter(m -> m.getDataCompra().getMonthValue()==mesReferencia)
+                                .mapToDouble(Compra :: getValorPago).sum()).sum();
+        
 	}
 
-	public double valorMedioDasCompras() {
-		return 0;
+	public double valorMedioDasCompras() { // Valor das vendas totais
+        return listaCliente.stream().mapToDouble(c -> c.getCompras().stream()
+                                .mapToDouble(Compra :: getValorPago).sum()).average().getAsDouble();
 	}
 
 	public Jogo jogoMaisVendido() {
