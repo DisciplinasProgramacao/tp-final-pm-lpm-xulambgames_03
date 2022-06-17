@@ -1,6 +1,5 @@
 package cliente;
 
-import iterator.IteratorCompra;
 
 public class ClienteCadastrado extends Cliente {
 
