@@ -1,5 +1,10 @@
 package aplicacao;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Scanner;
+
+import cliente.Cliente;
+import jogo.Jogo;
 
 
 public class App {
@@ -55,24 +60,25 @@ public class App {
 
         } while (opcao != 0);
     }
+
+    // private Map<Cliente> clientes;
+
+	private Collection<Jogo> jogo;
+
+	public double valorMensalVendido() {
+		return 0;
+	}
+
+	public double valorMedioDasCompras() {
+		return 0;
+	}
+
+	public Jogo jogoMaisVendido() {
+		return null;
+	}
+
+	public Jogo jogoMenosVendido() {
+		return null;
+	}
 }
 
-// public double valorMensalVendido(){
-
-//     return 0;
-// }
-
-// public double valorMedioDasCompras(){
-
-//     return 0; 
-// }
-
-// public Jogo jogoMaisVendidos(){
-
-//     return null;   
-// }
-
-// public Jogo jogoMenosVendido(){
-
-//     return null; 
-// }

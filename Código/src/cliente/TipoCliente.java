@@ -1,10 +1,13 @@
 package cliente;
+
 public enum TipoCliente {
 
-    EMPOLGADOS,
-    FANATICOS;
+	CADASTRADOS,
+	EMPOLGADOS,
+	FANATICOS;
+
+	private Cliente cliente;
 
 
 
-    
 }

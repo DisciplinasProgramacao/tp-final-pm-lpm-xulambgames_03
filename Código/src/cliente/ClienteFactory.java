@@ -1,8 +1,11 @@
 package cliente;
+
 public class ClienteFactory {
 
-    public static ICliente creator(TipoCliente tipoCliente) {
-        return null;
-    }
-    
+	private ICliente iCliente;
+
+	public static ICliente creator(TipoCliente TipoCliente) {
+		return null;
+	}
+
 }

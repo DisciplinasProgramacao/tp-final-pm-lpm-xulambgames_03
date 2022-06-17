@@ -1,59 +1,26 @@
 package compra;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import cliente.Cliente;
+import iterator.IteratorCompra;
 import jogo.Jogo;
-import java.io.Serializable;
+
+public class Compra {
+
+	private Jogo jogo;
+	private double valorTotal;
+	private double desconto;
+	private LocalDate dataCompra;
+	private String meioPagamento;
+	private Cliente cliente;
+	private IteratorCompra iteratorCompra;
 
 
-public class Compra implements Serializable {
+	public double calculaDesconto() {
+		return 0;
+	}
 
-    private static final long serialVersionUID = 20221L;
-   private double valorTotal;
-    private String meioDePagamento;
-    private double desconto;
-    private LocalDate dataDeCompra;
-    private List <Jogo> listaDeJogos;
-    
-    public Compra(String meioDePagamento) {
-        this.meioDePagamento = meioDePagamento;
-        this.dataDeCompra = LocalDate.now();
-        this.listaDeJogos = new ArrayList<>();
-        valorTotal=0;
-    }
+	public void adicionarJogo() {
 
-    public double getValorTotal() {
-        return valorTotal;
-    }
+	}
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    public String getMeioDePagamento() {
-        return meioDePagamento;
-    }
-
-    public void setMeioDePagamento(String meioDePagamento) {
-        this.meioDePagamento = meioDePagamento;
-    }
-
-    public double getDesconto() {
-        return desconto;
-    }
-
-    public void setDesconto(double desconto) {
-        this.desconto = desconto;
-    }
-
-    public LocalDate getDataDeCompra() {
-        return dataDeCompra;
-    }
-
-
-    public List<Jogo> getListaDeJogos() {
-        return listaDeJogos;
-    }
-
-    
 }
