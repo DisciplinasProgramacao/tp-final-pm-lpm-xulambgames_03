@@ -6,14 +6,18 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import cliente.Cliente;
+import cliente.ClienteFactory;
 import cliente.ICliente;
+import cliente.TipoCliente;
 import compra.Compra;
+import jogo.CategoriaJogos;
 import jogo.IJogo;
 import jogo.Jogo;
+import jogo.JogoFactory;
 
 public class App {
     
-    static List<Cliente> listaCliente;
+    static List<ICliente> listaCliente;
     static List<IJogo> listaJogo;
 
     private static int opcao;
@@ -44,6 +48,7 @@ public class App {
                     break;
 
                 case 2:
+                    cadastrarJogo();
 
                     break;
 
@@ -72,20 +77,18 @@ public class App {
 
 	public double valorMensalVendido() { // Valor do mes atual
         int mesReferencia = LocalDate.now().getMonthValue();
-        return listaCliente.stream().mapToDouble(c -> c.getCompras().stream().filter(m -> m.getDataCompra().getMonthValue()==mesReferencia)
-                                .mapToDouble(Compra :: getValorPago).sum()).sum();
-        
+        return listaCliente.stream().mapToDouble(c -> ((Cliente) c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue()==mesReferencia)
+                                .mapToDouble(Compra :: getValorPago).sum()).sum();  
 	}
 
 	public double valorMedioDasCompras() { // Valor das vendas totais
-        return listaCliente.stream().mapToDouble(c -> c.getCompras().stream()
+        return listaCliente.stream().mapToDouble(c -> ((Cliente) c).getCompras().stream()
                                 .mapToDouble(Compra :: getValorPago).sum()).average().getAsDouble();
 	}
 
     public Jogo jogoMaisVendido() {
         return (Jogo) listaJogo.stream()
                             .max((a,b) -> a.equals(b) ? 1 : -1).get();      
-
     }
 
     public Jogo jogoMenosVendido() {
@@ -106,6 +109,7 @@ public class App {
         String senha = sc.nextLine();
 
         while (!isValidPassword(senha)) {
+            senhinvalida();
             System.out.println("Informe sua senha: ");
             senha = sc.nextLine();
         }        
@@ -118,9 +122,54 @@ public class App {
             email = sc.nextLine();
         }
         
-        ICliente cliente = new Cliente(email, nomeDeUsuario, senha, cliente);
-        listaCliente.put(cliente);
+        ICliente cliente = ClienteFactory.creator(TipoCliente.CADASTRADOS, nome, nomeDeUsuario, senha, email);
+        listaCliente.add(cliente);
 
+        
+    }
+
+    public static void cadastrarJogo() throws Exception {
+
+        sc.nextLine();
+        System.out.println("Informe o titulo do jogo ");
+        String titulo = sc.nextLine();
+
+        System.out.println("Informe o preço do jogo: ");
+        double preco = sc.nextDouble();
+
+        sc.nextLine();
+        System.out.println("Informe o genero do jogo: ");
+        String genero = sc.nextLine();
+
+        System.out.println("Informe a classificação indicativa: ");
+        int classificacaoIndicativa = sc.nextInt();       
+
+        System.out.println("Informe a produtora do jogo: ");
+        String produtora = sc.nextLine();
+
+        sc.nextLine();
+
+        System.out.println("Informe a seguir a categoria do jogo: ");
+
+        String categoria = sc.nextLine();
+
+        CategoriaJogos categoriaJogo;
+        categoriaJogo = validarCategoria(categoria);
+
+        while (categoriaJogo == null)  {
+
+            System.out.println("Informe a seguir a categoria do jogo: ");
+            categoria = sc.nextLine();
+            categoriaJogo = validarCategoria(categoria);
+        }
+
+        IJogo jogo = JogoFactory.creator(categoriaJogo, titulo, preco, genero, classificacaoIndicativa, produtora);
+        
+    }
+
+    public static void cadastrarCompra() throws Exception {
+
+        
         
     }
 
@@ -140,6 +189,19 @@ public class App {
 
     public static boolean isValidPassword (String senha) {
 
+        String regex = "^(?=.*[0-9])"
+                       + "(?=.*[a-z])(?=.*[A-Z])"
+                       + "(?=.*[!@#$%^&+=])"
+                       + "(?=\\S+$).{8,20}$";
+        Pattern p = Pattern.compile(regex);
+        if (senha == null) {
+            return false;
+        }
+        Matcher m = p.matcher(senha);
+        return m.matches();
+    }
+
+    public static void senhinvalida(){
         System.out.println("\nFavor criar uma senha que respeita as sequintes regras:");
         System.out.println(); 
         System.out.println("conter entre 8 e 20 caracteres.");
@@ -148,17 +210,26 @@ public class App {
         System.out.println("Conter pelo menos um alfabeto minúsculo.");
         System.out.println("Conter pelo menos um caractere especial que inclui ! @ # $% & *() - + = ^ .");
         System.out.println("Não conter nenhum espaço em branco.\n");
-  
-        String regex = "^(?=.*[0-9])"
-                       + "(?=.*[a-z])(?=.*[A-Z])"
-                       + "(?=.*[@#$%^&+=])"
-                       + "(?=\\S+$).{8,20}$";
-        Pattern p = Pattern.compile(regex);
-        if (senha == null) {
-            return false;
+    }
+
+    public static CategoriaJogos validarCategoria(String categoria){
+
+        CategoriaJogos categoriaJogos = null;
+        if (categoria.toUpperCase().equals(CategoriaJogos.LANCAMENTO.toString())) {
+            categoriaJogos = CategoriaJogos.LANCAMENTO;
         }
-        Matcher m = p.matcher(senha);
-        return m.matches();
+        else if (categoria.toUpperCase().equals(CategoriaJogos.PREMIUM.toString())){
+            categoriaJogos = CategoriaJogos.PREMIUM;
+        }
+        else if (categoria.toUpperCase().equals(CategoriaJogos.PROMOCAO.toString())){
+            categoriaJogos = CategoriaJogos.PROMOCAO;
+        }
+        else if (categoria.toUpperCase().equals(CategoriaJogos.REGULAR.toString())){
+            categoriaJogos = CategoriaJogos.REGULAR;
+        } else
+            System.out.println("\nFavor inserir uma categoria entre lancamento, premium, promocao e regular.\n");
+
+        return categoriaJogos;
     }
 }
 

@@ -2,7 +2,7 @@ package jogo;
 
 public class JogoFactory {
 
-	public static IJogo criator(CategoriaJogos tipoJogo, String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) throws Exception {
+	public static IJogo creator(CategoriaJogos tipoJogo, String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) throws Exception {
 		IJogo jogo = null;
 		if (tipoJogo == null) {
 			throw new Exception("Tipo do jogo não expecificado");
