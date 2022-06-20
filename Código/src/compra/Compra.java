@@ -9,7 +9,7 @@ import jogo.JogoLancamento;
 import jogo.JogoPremuim;
 import jogo.JogoRegular;
 
-public class Compra implements Serializable{
+public class Compra implements Serializable {
 
 	private List<IJogo> jogos;
 	private double valorTotal;
@@ -51,6 +51,7 @@ public class Compra implements Serializable{
 	public void adicionarJogo(IJogo jogo) {
 		jogos.add(jogo);
 		this.valorTotal += jogo.calcularPreco();
+		jogo.comprarJogo();
 	}
 
 	public List<IJogo> getJogos() {
@@ -79,6 +80,12 @@ public class Compra implements Serializable{
 
 	public void setValorPago(double valorPago) {
 		this.valorPago = valorPago;
+	}
+
+	@Override
+	public String toString() {
+		return "Compra [dataCompra=" + dataCompra + ", desconto=" + desconto + ", jogos=" + jogos + ", meioPagamento="
+				+ meioPagamento + ", valorPago=" + valorPago + ", valorTotal=" + valorTotal + "]";
 	}
 
 }

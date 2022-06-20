@@ -5,11 +5,13 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import cliente.Cliente;
 import cliente.ClienteFactory;
 import cliente.ICliente;
 import cliente.TipoCliente;
 import compra.Compra;
+import dao.DAO;
+import dao.DaoGenerico;
+import iterator.IteratorCompra;
 import jogo.CategoriaJogos;
 import jogo.IJogo;
 import jogo.Jogo;
@@ -23,6 +25,13 @@ public class App {
     private static int opcao;
     private static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
+
+        DAO<ICliente> daoCliente = new DaoGenerico<>("Clientes.DAT");
+        DAO<IJogo> daoJogo = new DaoGenerico<>("Jogos.DAT");
+
+        listaCliente = daoCliente.getAll();
+        listaJogo = daoJogo.getAll();   
+
     
         do {
             System.out.println("\n                  *****      Xulamb Games 03      *****                ");
@@ -32,7 +41,10 @@ public class App {
             System.out.println("      |    2. Cadastrar jogo                                            |");
             System.out.println("      |    3. Lançar compra                                             |");
             System.out.println("      |    4. Histórico de um cliente específico                        |");
-            System.out.println("      |    5. Calcular o valor de uma nova compra                       |");
+            System.out.println("      |    5. Valor mensal vendido                                      |");
+            System.out.println("      |    6. Valor médio das compras                                   |");
+            System.out.println("      |    7. Jogo mais vendido                                         |");
+            System.out.println("      |    7. Jogo menos vendido                                        |");
             System.out.println("      |                                                                 |");
             System.out.println("      |    0. Salvar e sair                                             |");
             System.out.println("      *=================================================================*\n");
@@ -53,15 +65,27 @@ public class App {
                     break;
 
                 case 3:
-
+                    cadastrarCompra();
 
                     break;
 
                 case 4:
+                    historicoDoCliente();
 
                     break;
 
                 case 5:
+                    valorMedioDasCompras();
+
+                    break;
+
+                case 6:
+                   jogoMaisVendido();
+
+                    break;
+
+                case 7:
+                    jogoMenosVendido();
 
                     break;
 
@@ -71,29 +95,45 @@ public class App {
             }
 
         } while (opcao != 0);
+
+        daoJogo.salvarTodos(listaJogo);
+        daoCliente.salvarTodos(listaCliente);
     }
 
     // DAO padrão de projeto pra salvar arquivo
 
-	public double valorMensalVendido() { // Valor do mes atual
+	public static double valorMensalVendido() { // Valor do mes atual
         int mesReferencia = LocalDate.now().getMonthValue();
-        return listaCliente.stream().mapToDouble(c -> ((Cliente) c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue()==mesReferencia)
+        return listaCliente.stream().mapToDouble(c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue()==mesReferencia)
                                 .mapToDouble(Compra :: getValorPago).sum()).sum();  
 	}
 
-	public double valorMedioDasCompras() { // Valor das vendas totais
-        return listaCliente.stream().mapToDouble(c -> ((Cliente) c).getCompras().stream()
+	public static double valorMedioDasCompras() { // Valor das vendas totais
+        return listaCliente.stream().mapToDouble(c -> (c).getCompras().stream()
                                 .mapToDouble(Compra :: getValorPago).sum()).average().getAsDouble();
 	}
 
-    public Jogo jogoMaisVendido() {
-        return (Jogo) listaJogo.stream()
-                            .max((a,b) -> a.equals(b) ? 1 : -1).get();      
+    public static Jogo jogoMaisVendido() {
+
+        int maisComprado = listaJogo.stream()
+                    .mapToInt(j -> j.getNumComprados()).max().getAsInt();
+
+        for (IJogo jogo : listaJogo) {
+            if (jogo.getNumComprados() == maisComprado)
+                return (Jogo) jogo;
+        }
+        return null;
     }
 
-    public Jogo jogoMenosVendido() {
-        return (Jogo) listaJogo.stream()
-                            .max((a,b) -> a.equals(b) ? -1 : 1).get();   
+    public static Jogo jogoMenosVendido() {
+        int menosComprado = listaJogo.stream()
+                    .mapToInt(j -> j.getNumComprados()).min().getAsInt();
+
+        for (IJogo jogo : listaJogo) {
+            if (jogo.getNumComprados() == menosComprado)
+                return (Jogo) jogo;
+        }
+        return null;  
 	}
 
     public static void cadastrarCliente() throws Exception {
@@ -102,14 +142,29 @@ public class App {
         System.out.println("Informe o seu nome: ");
         String nome = sc.nextLine();
 
+        boolean jaExistente = false;
+        String nomeDeUsuario;
+        do {
         System.out.println("Informe o seu nome de usuário: ");
-        String nomeDeUsuario = sc.nextLine();
+        nomeDeUsuario = sc.nextLine();
+
+        for (ICliente cliente : listaCliente ) {
+            if (nomeDeUsuario.equals(cliente.getNomeDeUsuario())) {
+                System.out.println("Usuário já cadastrado");
+                jaExistente = true;
+                break;
+            }
+        }
+
+        } while(jaExistente);
+
+        
 
         System.out.println("Informe sua senha: ");
         String senha = sc.nextLine();
 
         while (!isValidPassword(senha)) {
-            senhinvalida();
+            senhaInvalida();
             System.out.println("Informe sua senha: ");
             senha = sc.nextLine();
         }        
@@ -121,11 +176,22 @@ public class App {
             System.out.println("Informe seu email: ");
             email = sc.nextLine();
         }
-        
-        ICliente cliente = ClienteFactory.creator(TipoCliente.CADASTRADOS, nome, nomeDeUsuario, senha, email);
-        listaCliente.add(cliente);
 
         
+        System.out.println("Informe qual o tipo do cliente: ");
+        String tipo = sc.nextLine();
+
+        TipoCliente tipoCliente = validarTipoCliente(tipo);
+
+        while (tipoCliente == null) {
+        System.out.println("Informe qual o tipo do cliente: ");
+        tipo = sc.nextLine();
+        tipoCliente = validarTipoCliente(tipo);
+        }
+        
+        ICliente cliente = ClienteFactory.creator(tipoCliente, nome, nomeDeUsuario, senha, email);
+        listaCliente.add(cliente);
+
     }
 
     public static void cadastrarJogo() throws Exception {
@@ -150,27 +216,70 @@ public class App {
         sc.nextLine();
 
         System.out.println("Informe a seguir a categoria do jogo: ");
-
         String categoria = sc.nextLine();
 
-        CategoriaJogos categoriaJogo;
-        categoriaJogo = validarCategoria(categoria);
-
-        while (categoriaJogo == null)  {
-
-            System.out.println("Informe a seguir a categoria do jogo: ");
-            categoria = sc.nextLine();
-            categoriaJogo = validarCategoria(categoria);
-        }
-
-        IJogo jogo = JogoFactory.creator(categoriaJogo, titulo, preco, genero, classificacaoIndicativa, produtora);
+        IJogo jogo = JogoFactory.creator(validarCategoriaJogos(categoria), titulo, preco, genero, classificacaoIndicativa, produtora);
+        listaJogo.add(jogo);
         
     }
 
-    public static void cadastrarCompra() throws Exception {
+    public static void cadastrarCompra() throws Exception {  
 
+        System.out.println("Qual o nome do usuário: ");
+        String nomeUsuario = sc.nextLine();
+
+        ICliente cliente = null;
+        for (ICliente iCliente : listaCliente) {
+            if (iCliente.getNome().equals(nomeUsuario)){
+                cliente = iCliente;
+                break; // parar de percorrer
+            }
+        } 
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado");
+            return ;
+        }
+
+        System.out.println("Qual o meio de pagamento? : ");
+        String meioPagamento = sc.nextLine();
+
+        Compra compra = new Compra(meioPagamento);
         
-        
+        String s;
+        do {
+            addJogo(compra);
+            System.out.println("Gostaria de adicionar outro jogo? s/n");
+            s = sc.nextLine();
+        } while (s.equals("s"));
+
+        cliente.addCompras(compra); //Após adicionar todos os jogos, método addCompra calcula os descontos.
+
+        System.out.println("Compra finalizada. Valor total:"+cliente.calculcarValorCompras(compra));       
+    }
+
+    public static void historicoDoCliente() {
+
+        System.out.println("Qual o nome do usuário: ");
+        String nomeUsuario = sc.nextLine();
+
+        ICliente cliente = null;
+        for (ICliente iCliente : listaCliente) {
+            if (iCliente.getNome().equals(nomeUsuario)){
+                cliente = iCliente;
+                break; // parar de percorrer
+            }
+        } 
+        if (cliente == null) {
+            System.out.println("Cliente não encontrado");
+            return ;
+        }
+
+        IteratorCompra iteratorCompra = cliente.getExtrato();
+
+        while (iteratorCompra.hasNext()) {
+            System.out.println(iteratorCompra.getNext());
+        } 
+
     }
 
     public static boolean isValidEmailAddressRegex(String email) {
@@ -201,7 +310,7 @@ public class App {
         return m.matches();
     }
 
-    public static void senhinvalida(){
+    public static void senhaInvalida(){
         System.out.println("\nFavor criar uma senha que respeita as sequintes regras:");
         System.out.println(); 
         System.out.println("conter entre 8 e 20 caracteres.");
@@ -212,24 +321,56 @@ public class App {
         System.out.println("Não conter nenhum espaço em branco.\n");
     }
 
-    public static CategoriaJogos validarCategoria(String categoria){
+    public static TipoCliente validarTipoCliente(String tipo) {
+
+        TipoCliente tipoCliente = null;
+        if (tipo.equalsIgnoreCase(TipoCliente.CADASTRADOS.toString())) {
+            tipoCliente = TipoCliente.CADASTRADOS;
+        }
+        else if (tipo.equalsIgnoreCase(TipoCliente.EMPOLGADOS.toString())){
+            tipoCliente = TipoCliente.EMPOLGADOS;
+        }
+        else if (tipo.equalsIgnoreCase(TipoCliente.FANATICOS.toString())){
+            tipoCliente = TipoCliente.FANATICOS;
+        } else
+            System.out.println("\nFavor inserir um tipo de cliente entre cadastrados, empolgados e fanáticos.\n");
+
+        return tipoCliente;
+    }
+
+    public static CategoriaJogos validarCategoriaJogos(String categoria) {
 
         CategoriaJogos categoriaJogos = null;
-        if (categoria.toUpperCase().equals(CategoriaJogos.LANCAMENTO.toString())) {
+        
+        if (categoria.equalsIgnoreCase(CategoriaJogos.LANCAMENTO.toString())) {
             categoriaJogos = CategoriaJogos.LANCAMENTO;
         }
-        else if (categoria.toUpperCase().equals(CategoriaJogos.PREMIUM.toString())){
+        else if (categoria.equalsIgnoreCase(CategoriaJogos.PREMIUM.toString())){
             categoriaJogos = CategoriaJogos.PREMIUM;
         }
-        else if (categoria.toUpperCase().equals(CategoriaJogos.PROMOCAO.toString())){
+        else if (categoria.equalsIgnoreCase(CategoriaJogos.PROMOCAO.toString())){
             categoriaJogos = CategoriaJogos.PROMOCAO;
         }
-        else if (categoria.toUpperCase().equals(CategoriaJogos.REGULAR.toString())){
+        else if (categoria.equalsIgnoreCase(CategoriaJogos.REGULAR.toString())){
             categoriaJogos = CategoriaJogos.REGULAR;
         } else
             System.out.println("\nFavor inserir uma categoria entre lancamento, premium, promocao e regular.\n");
 
         return categoriaJogos;
     }
+
+    public static void addJogo(Compra compra){
+        System.out.println("Qual o titulo do jogo: ");
+        String tituloJogo = sc.nextLine();
+
+        for (IJogo jogo : listaJogo) {
+            if (jogo.getTitulo().equals(tituloJogo)){
+                compra.adicionarJogo(jogo);
+                return ;
+            }     
+        }
+        System.out.println("Jogo não encontrado");
+    }
+
 }
 

@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public interface IJogo extends Serializable{
 
-	public abstract double calcularPreco();
+	double calcularPreco();
+	void comprarJogo();
+	int getNumComprados();
+	String getTitulo();
 
 }

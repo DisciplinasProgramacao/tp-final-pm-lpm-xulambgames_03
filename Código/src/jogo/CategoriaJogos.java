@@ -1,6 +1,6 @@
 package jogo;
 
-public enum CategoriaJogos {
+public enum categoriaJogos {
 
 	LANCAMENTO,
 	PREMIUM,

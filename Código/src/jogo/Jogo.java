@@ -7,6 +7,9 @@ public abstract class Jogo implements IJogo {
 	private String genero;
 	private int classificacaoIndicativa;
 	private String produtora;
+	private int numComprados;
+
+	
 
 	public Jogo(String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) {
 		this.titulo = titulo;
@@ -14,6 +17,7 @@ public abstract class Jogo implements IJogo {
 		this.genero = genero;
 		this.classificacaoIndicativa = classificacaoIndicativa;
 		this.produtora = produtora;
+		this.numComprados = 0;
 	}
 
 	/**
@@ -24,6 +28,14 @@ public abstract class Jogo implements IJogo {
 
 	public String getTitulo() {
 		return titulo;
+	}
+
+	public void comprarJogo(){
+		numComprados++;
+	}
+
+	public int getNumComprados() {
+		return numComprados;
 	}
 
 	public void setTitulo(String titulo) {

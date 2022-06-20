@@ -7,7 +7,7 @@ import compra.Compra;
 import iterator.ImplementedItaratorCompra;
 import iterator.IteratorCompra;
 
-public abstract class Cliente implements ICliente{
+public abstract class Cliente implements ICliente {
 
 	private String nome;
 	private String nomeDeUsuario;
@@ -27,9 +27,13 @@ public abstract class Cliente implements ICliente{
 	public abstract double calculaDesconto();
 
 	public void addCompras(Compra compra) { // Caulando o desconto do cliente, pós calculo do desconto da compra.
-		double valorCompra = compra.getValorTotal();
-		compra.setValorPago(valorCompra - valorCompra * this.calculaDesconto());
+		compra.setValorPago(calculcarValorCompras(compra));
 		compras.add(compra);
+	}
+
+	public double calculcarValorCompras(Compra compra) {
+		double valorCompra = compra.getValorTotal();
+		return valorCompra - valorCompra * this.calculaDesconto();
 	}
 
 	public IteratorCompra getExtrato() {
