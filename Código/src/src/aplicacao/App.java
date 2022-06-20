@@ -100,6 +100,7 @@ public class App {
         daoCliente.salvarTodos(listaCliente);
     }
 
+    // DAO padrão de projeto pra salvar arquivo
 
 	public static double valorMensalVendido() { // Valor do mes atual
         int mesReferencia = LocalDate.now().getMonthValue();

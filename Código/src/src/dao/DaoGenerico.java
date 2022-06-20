@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoGenerico<E> implements DAO<E> { // DAO (Organização autônoma descentralizada) padrão de projeto pra salvar arquivo
+public class DaoGenerico<E> implements DAO<E> {
 
     String nomeDoArquivo;
 
@@ -28,7 +28,9 @@ public class DaoGenerico<E> implements DAO<E> { // DAO (Organização autônoma 
             
         } catch (Exception exception) {
 
-        }        
+        }
+
+        
     }
 
     @Override
