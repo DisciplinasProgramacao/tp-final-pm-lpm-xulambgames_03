@@ -253,7 +253,7 @@ public class App {
 
         cliente.addCompras(compra); //Após adicionar todos os jogos, método addCompra calcula os descontos.
 
-        System.out.println("Compra finalizada. Valor total:"+cliente.calculcarValorCompras(compra));       
+        System.out.println("Compra finalizada. Valor total:"+cliente.calcularValorCompras(compra));       
     }
 
     public static void historicoDoCliente() {

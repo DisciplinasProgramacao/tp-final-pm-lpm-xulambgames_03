@@ -16,7 +16,7 @@ public interface ICliente extends Serializable{
 	String getSenha();
 	String getEmail();
 	List<Compra> getCompras();
-	double calculcarValorCompras(Compra compra);
+	double calcularValorCompras(Compra compra);
 
 
 

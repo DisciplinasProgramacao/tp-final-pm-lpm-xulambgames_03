@@ -27,11 +27,11 @@ public abstract class Cliente implements ICliente {
 	public abstract double calculaDesconto();
 
 	public void addCompras(Compra compra) { // Caulando o desconto do cliente, pós calculo do desconto da compra.
-		compra.setValorPago(calculcarValorCompras(compra));
+		compra.setValorPago(calcularValorCompras(compra));
 		compras.add(compra);
 	}
 
-	public double calculcarValorCompras(Compra compra) {
+	public double calcularValorCompras(Compra compra) {
 		double valorCompra = compra.getValorTotal();
 		return valorCompra - valorCompra * this.calculaDesconto();
 	}
