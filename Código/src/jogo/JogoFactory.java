@@ -1,23 +1,25 @@
 package jogo;
 
+import excecao.TipoInvalidoExcecao;
+
 public class JogoFactory {
 
-	public static IJogo creator(CategoriaJogos tipoJogo, String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) throws Exception {
-		IJogo jogo = null;
-		if (tipoJogo == null) {
-			throw new Exception("Tipo do jogo não expecificado");
+	public static Jogo creator(String tipo) throws TipoInvalidoExcecao {
+		Jogo jogo = null;
+		if (tipo.equalsIgnoreCase("regular")) {
+			jogo = new JogoRegular();
 		}
-		if (tipoJogo == CategoriaJogos.REGULAR) {
-			jogo = new JogoRegular(titulo, preco, genero, classificacaoIndicativa, produtora);
+		else if (tipo.equalsIgnoreCase("promocao")) {
+			jogo = new JogoPromocao();
 		}
-		if (tipoJogo == CategoriaJogos.PROMOCAO) {
-			jogo = new JogoPromocao(titulo, preco, genero, classificacaoIndicativa, produtora);
+		else if (tipo.equalsIgnoreCase("lancamento")) {
+			jogo = new JogoLancamento();
 		}
-		if (tipoJogo == CategoriaJogos.LANCAMENTO) {
-			jogo = new JogoLancamento(titulo, preco, genero, classificacaoIndicativa, produtora);
+		else if (tipo.equalsIgnoreCase("premuim")) {
+			jogo = new JogoPremuim();
 		}
-		if (tipoJogo == CategoriaJogos.PREMIUM) {
-			jogo = new JogoPremuim(titulo, preco, genero, classificacaoIndicativa, produtora);
+		else {
+			throw new TipoInvalidoExcecao(" o " + tipo+ " não é um tipo válido para jogo");
 		}
 		return jogo;
 	}

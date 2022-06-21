@@ -1,22 +1,24 @@
 package jogo;
 
-public abstract class Jogo implements IJogo {
+import java.io.Serializable;
+
+public abstract class Jogo implements Serializable {
 
 	private String titulo;
-	private double preco;
+	private double precoBase;
 	private String genero;
 	private int classificacaoIndicativa;
 	private String produtora;
 	private int numComprados;
+	private double desconto;
 
 	
 
-	public Jogo(String titulo, double preco, String genero, int classificacaoIndicativa, String produtora) {
-		this.titulo = titulo;
-		this.preco = preco;
-		this.genero = genero;
-		this.classificacaoIndicativa = classificacaoIndicativa;
-		this.produtora = produtora;
+	public double getDesconto() {
+		return desconto;
+	}
+
+	public Jogo(){
 		this.numComprados = 0;
 	}
 
@@ -42,12 +44,12 @@ public abstract class Jogo implements IJogo {
 		this.titulo = titulo;
 	}
 
-	public double getPreco() {
-		return preco;
+	public double getPrecoBase() {
+		return precoBase;
 	}
 
-	public void setPreco(double preco) {
-		this.preco = preco;
+	public void setPrecoBase(double preco) {
+		this.precoBase = preco;
 	}
 
 	public String getGenero() {
@@ -73,5 +75,7 @@ public abstract class Jogo implements IJogo {
 	public void setProdutora(String produtora) {
 		this.produtora = produtora;
 	}
-
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
+	}
 }

@@ -1,25 +1,22 @@
 package cliente;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import compra.Compra;
-import iterator.ImplementedItaratorCompra;
-import iterator.IteratorCompra;
 
-public abstract class Cliente implements ICliente {
+
+public abstract class Cliente implements Serializable {
 
 	private String nome;
 	private String nomeDeUsuario;
 	private String senha;
+	
+
 	private String email;
 	private List<Compra> compras;
 
-	public Cliente(String nome, String nomeDeUsuario, String senha, String email) {
-		this.nome = nome;
-		this.nomeDeUsuario = nomeDeUsuario;
-		this.senha = senha;
-		this.email = email;
+	public Cliente() {
 		compras = new ArrayList<Compra>();
 	}
 
@@ -36,9 +33,12 @@ public abstract class Cliente implements ICliente {
 		return valorCompra - valorCompra * this.calculaDesconto();
 	}
 
-	public IteratorCompra getExtrato() {
-		IteratorCompra iteratorCompra = new ImplementedItaratorCompra(new LinkedList<Compra>(compras)); //Converter lista pra fila
-		return iteratorCompra;
+	public String  getExtrato() {
+		StringBuilder builder = new StringBuilder();
+		for (Compra compra : compras) {
+			builder.append(compra+"\n");
+		}
+		return builder.toString();
 	}
 
 	public String getNome() {
@@ -76,6 +76,8 @@ public abstract class Cliente implements ICliente {
 	public void setCompras(List<Compra> compras) {
 		this.compras = compras;
 	}
-	
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
 }

@@ -2,8 +2,8 @@ package cliente;
 
 public class ClienteEmpolgado extends Cliente {
 
-	public ClienteEmpolgado(String nome, String nomeDeUsuario, String senha, String email) {
-		super(nome, nomeDeUsuario, senha, email);
+	public ClienteEmpolgado(){
+		super ();
 	}
 
 	private static final double DESCONTO = 0.1;

@@ -1,24 +1,25 @@
 package cliente;
 
+import excecao.TipoInvalidoExcecao;
+
 public class ClienteFactory {
 
-	public static ICliente creator(TipoCliente tipoCliente, String nome, String nomeDeUsuario, String senha,
-			String email) throws Exception {
+	public static Cliente creator( String tipo) throws TipoInvalidoExcecao {
 				
-		ICliente cliente = null;
+		Cliente cliente = null;
 
-		if (tipoCliente == null) {
-			throw new Exception("Tipo do cliente não expecificado");
+		if (tipo.equalsIgnoreCase("cadastrado")) {
+			cliente = new ClienteCadastrado();
 		}
-		if (tipoCliente == TipoCliente.CADASTRADOS) {
-			cliente = new ClienteCadastrado(nome, nomeDeUsuario, senha, email);
+		else if (tipo.equalsIgnoreCase("empolgado")) {
+			cliente = new ClienteEmpolgado ();
 		}
-		if (tipoCliente == TipoCliente.EMPOLGADOS) {
-			cliente = new ClienteEmpolgado(nome, nomeDeUsuario, senha, email);
-		}
-		if (tipoCliente == TipoCliente.FANATICOS) {
-			cliente = new ClienteFanatico(nome, nomeDeUsuario, senha, email);
+		else if (tipo.equalsIgnoreCase("fanatico")) {
+			cliente = new ClienteFanatico();
 
+		}
+		else {
+			throw new TipoInvalidoExcecao(" o " + tipo+ " não é um tipo válido para cliente");
 		}
 		return cliente;
 	}

@@ -3,15 +3,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import jogo.IJogo;
+import jogo.Jogo;
 import jogo.JogoLancamento;
 import jogo.JogoPremuim;
 import jogo.JogoRegular;
 
 public class Compra implements Serializable {
 
-	private List<IJogo> jogos;
+	private List<Jogo> jogos;
 	private double valorTotal;
 	private double desconto;
 	private LocalDate dataCompra;
@@ -48,13 +47,13 @@ public class Compra implements Serializable {
 		return desconto;
 	}
 
-	public void adicionarJogo(IJogo jogo) {
+	public void adicionarJogo(Jogo jogo) {
 		jogos.add(jogo);
 		this.valorTotal += jogo.calcularPreco();
 		jogo.comprarJogo();
 	}
 
-	public List<IJogo> getJogos() {
+	public List<Jogo> getJogos() {
 		return jogos;
 	}
 

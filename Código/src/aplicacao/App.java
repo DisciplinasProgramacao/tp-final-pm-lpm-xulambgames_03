@@ -5,29 +5,26 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import cliente.Cliente;
 import cliente.ClienteFactory;
-import cliente.ICliente;
-import cliente.TipoCliente;
 import compra.Compra;
 import dao.DAO;
 import dao.DaoGenerico;
-import iterator.IteratorCompra;
-import jogo.CategoriaJogos;
-import jogo.IJogo;
+import excecao.TipoInvalidoExcecao;
 import jogo.Jogo;
 import jogo.JogoFactory;
 
 public class App {
     
-    static List<ICliente> listaCliente;
-    static List<IJogo> listaJogo;
+    static List<Cliente> listaCliente;
+    static List<Jogo> listaJogo;
 
     private static int opcao;
     private static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
 
-        DAO<ICliente> daoCliente = new DaoGenerico<>("Clientes.DAT");
-        DAO<IJogo> daoJogo = new DaoGenerico<>("Jogos.DAT");
+        DAO<Cliente> daoCliente = new DaoGenerico<>("Clientes.DAT");
+        DAO<Jogo> daoJogo = new DaoGenerico<>("Jogos.DAT");
 
         listaCliente = daoCliente.getAll();
         listaJogo = daoJogo.getAll();   
@@ -117,9 +114,9 @@ public class App {
         int maisComprado = listaJogo.stream()
                     .mapToInt(j -> j.getNumComprados()).max().getAsInt();
 
-        for (IJogo jogo : listaJogo) {
+        for (Jogo jogo : listaJogo) {
             if (jogo.getNumComprados() == maisComprado)
-                return (Jogo) jogo;
+                return jogo;
         }
         return null;
     }
@@ -128,14 +125,14 @@ public class App {
         int menosComprado = listaJogo.stream()
                     .mapToInt(j -> j.getNumComprados()).min().getAsInt();
 
-        for (IJogo jogo : listaJogo) {
+        for (Jogo jogo : listaJogo) {
             if (jogo.getNumComprados() == menosComprado)
-                return (Jogo) jogo;
+                return jogo;
         }
         return null;  
 	}
 
-    public static void cadastrarCliente() throws Exception {
+    public static void cadastrarCliente() {
 
         sc.nextLine();
         System.out.println("Informe o seu nome: ");
@@ -147,7 +144,7 @@ public class App {
         System.out.println("Informe o seu nome de usuário: ");
         nomeDeUsuario = sc.nextLine();
 
-        for (ICliente cliente : listaCliente ) {
+        for (Cliente cliente : listaCliente ) {
             if (nomeDeUsuario.equals(cliente.getNomeDeUsuario())) {
                 System.out.println("Usuário já cadastrado");
                 jaExistente = true;
@@ -179,21 +176,20 @@ public class App {
         
         System.out.println("Informe qual o tipo do cliente: ");
         String tipo = sc.nextLine();
-
-        TipoCliente tipoCliente = validarTipoCliente(tipo);
-
-        while (tipoCliente == null) {
-        System.out.println("Informe qual o tipo do cliente: ");
-        tipo = sc.nextLine();
-        tipoCliente = validarTipoCliente(tipo);
+        try {
+            Cliente cliente = ClienteFactory.creator(tipo);
+            cliente.setNome(nome);
+            cliente.setEmail(email);
+            cliente.setNomeDeUsuario(nomeDeUsuario);
+            cliente.setSenha(senha);
+            listaCliente.add(cliente);
+        } catch (TipoInvalidoExcecao e) {
+            System.out.println(e.getMessage());
         }
-        
-        ICliente cliente = ClienteFactory.creator(tipoCliente, nome, nomeDeUsuario, senha, email);
-        listaCliente.add(cliente);
 
     }
 
-    public static void cadastrarJogo() throws Exception {
+    public static void cadastrarJogo() {
 
         sc.nextLine();
         System.out.println("Informe o titulo do jogo ");
@@ -213,22 +209,35 @@ public class App {
         String produtora = sc.nextLine();
 
         sc.nextLine();
+        
+        System.out.println("Informe o desconto do jogo: ");
+        double desconto = sc.nextDouble();
 
         System.out.println("Informe a seguir a categoria do jogo: ");
         String categoria = sc.nextLine();
-
-        IJogo jogo = JogoFactory.creator(validarCategoriaJogos(categoria), titulo, preco, genero, classificacaoIndicativa, produtora);
-        listaJogo.add(jogo);
+        try {
+            Jogo jogo = JogoFactory.creator(categoria);
+        jogo.setTitulo(titulo);
+        jogo.setPrecoBase(preco);
+        jogo.setGenero(genero);
+        jogo.setClassificacaoIndicativa(classificacaoIndicativa);
+        jogo.setProdutora(produtora);
+        jogo.setDesconto(desconto);
+        listaJogo.add(jogo); 
+        } catch (TipoInvalidoExcecao e) {
+        System.out.println(e.getMessage());
+        }
+       
         
     }
 
-    public static void cadastrarCompra() throws Exception {  
+    public static void cadastrarCompra() {  
 
         System.out.println("Qual o nome do usuário: ");
         String nomeUsuario = sc.nextLine();
 
-        ICliente cliente = null;
-        for (ICliente iCliente : listaCliente) {
+        Cliente cliente = null;
+        for (Cliente iCliente : listaCliente) {
             if (iCliente.getNome().equals(nomeUsuario)){
                 cliente = iCliente;
                 break; // parar de percorrer
@@ -261,8 +270,8 @@ public class App {
         System.out.println("Qual o nome do usuário: ");
         String nomeUsuario = sc.nextLine();
 
-        ICliente cliente = null;
-        for (ICliente iCliente : listaCliente) {
+        Cliente cliente = null;
+        for (Cliente iCliente : listaCliente) {
             if (iCliente.getNome().equals(nomeUsuario)){
                 cliente = iCliente;
                 break; // parar de percorrer
@@ -272,12 +281,7 @@ public class App {
             System.out.println("Cliente não encontrado");
             return ;
         }
-
-        IteratorCompra iteratorCompra = cliente.getExtrato();
-
-        while (iteratorCompra.hasNext()) {
-            System.out.println(iteratorCompra.getNext());
-        } 
+        System.out.println(cliente.getExtrato());
 
     }
 
@@ -320,49 +324,11 @@ public class App {
         System.out.println("Não conter nenhum espaço em branco.\n");
     }
 
-    public static TipoCliente validarTipoCliente(String tipo) {
-
-        TipoCliente tipoCliente = null;
-        if (tipo.equalsIgnoreCase(TipoCliente.CADASTRADOS.toString())) {
-            tipoCliente = TipoCliente.CADASTRADOS;
-        }
-        else if (tipo.equalsIgnoreCase(TipoCliente.EMPOLGADOS.toString())){
-            tipoCliente = TipoCliente.EMPOLGADOS;
-        }
-        else if (tipo.equalsIgnoreCase(TipoCliente.FANATICOS.toString())){
-            tipoCliente = TipoCliente.FANATICOS;
-        } else
-            System.out.println("\nFavor inserir um tipo de cliente entre cadastrados, empolgados e fanáticos.\n");
-
-        return tipoCliente;
-    }
-
-    public static CategoriaJogos validarCategoriaJogos(String categoria) {
-
-        CategoriaJogos categoriaJogos = null;
-        
-        if (categoria.equalsIgnoreCase(CategoriaJogos.LANCAMENTO.toString())) {
-            categoriaJogos = CategoriaJogos.LANCAMENTO;
-        }
-        else if (categoria.equalsIgnoreCase(CategoriaJogos.PREMIUM.toString())){
-            categoriaJogos = CategoriaJogos.PREMIUM;
-        }
-        else if (categoria.equalsIgnoreCase(CategoriaJogos.PROMOCAO.toString())){
-            categoriaJogos = CategoriaJogos.PROMOCAO;
-        }
-        else if (categoria.equalsIgnoreCase(CategoriaJogos.REGULAR.toString())){
-            categoriaJogos = CategoriaJogos.REGULAR;
-        } else
-            System.out.println("\nFavor inserir uma categoria entre lancamento, premium, promocao e regular.\n");
-
-        return categoriaJogos;
-    }
-
     public static void addJogo(Compra compra){
         System.out.println("Qual o titulo do jogo: ");
         String tituloJogo = sc.nextLine();
 
-        for (IJogo jogo : listaJogo) {
+        for (Jogo jogo : listaJogo) {
             if (jogo.getTitulo().equals(tituloJogo)){
                 compra.adicionarJogo(jogo);
                 return ;
