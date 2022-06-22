@@ -12,8 +12,6 @@ public abstract class Jogo implements Serializable {
 	private int numComprados;
 	private double desconto;
 
-	
-
 	public double getDesconto() {
 		return desconto;
 	}
@@ -75,7 +73,13 @@ public abstract class Jogo implements Serializable {
 	public void setProdutora(String produtora) {
 		this.produtora = produtora;
 	}
+
 	public void setDesconto(double desconto) {
 		this.desconto = desconto;
+	}
+
+	@Override
+	public String toString() {
+		return titulo;
 	}
 }

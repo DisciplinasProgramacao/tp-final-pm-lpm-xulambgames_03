@@ -83,8 +83,8 @@ public class Compra implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Compra [dataCompra=" + dataCompra + ", desconto=" + desconto + ", jogos=" + jogos + ", meioPagamento="
-				+ meioPagamento + ", valorPago=" + valorPago + ", valorTotal=" + valorTotal + "]";
+		return  "jogos=" + jogos + "\ndesconto=" + desconto +  "\nmeioPagamento="
+				+ meioPagamento  + "\nvalorTotal=" + valorTotal + "\nvalorPago=" + valorPago;
 	}
 
 }

@@ -10,4 +10,13 @@ public class JogoPremuim extends Jogo {
 		return super.getPrecoBase();
 	}
 
+	@Override
+	public void setDesconto (double desconto){
+		if (desconto == 0) {
+			super.setDesconto(desconto);
+		} else
+		System.out.println("A categoria informada não possui desconto, favor digitar 0 !");
+	}
+	
+
 }

@@ -2,7 +2,7 @@ package cliente;
 
 import excecao.TipoInvalidoExcecao;
 
-public class ClienteFactory {
+public class ClienteFactory { //Meia fábrica
 
 	public static Cliente creator( String tipo) throws TipoInvalidoExcecao {
 				
@@ -19,7 +19,7 @@ public class ClienteFactory {
 
 		}
 		else {
-			throw new TipoInvalidoExcecao(" o " + tipo+ " não é um tipo válido para cliente");
+			throw new TipoInvalidoExcecao(" O " + tipo+ " não é um tipo válido para cliente");
 		}
 		return cliente;
 	}

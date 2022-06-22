@@ -1,7 +1,5 @@
 package jogo;
 
-
-
 public class JogoRegular extends Jogo {
 
 	public JogoRegular() {
@@ -16,8 +14,9 @@ public class JogoRegular extends Jogo {
 	}
 	@Override
 	public void setDesconto (double desconto){
-		if (desconto <DESCONTO_MAX && desconto > DESCONTO_MIN ){
+		if (desconto >= DESCONTO_MIN && desconto <= DESCONTO_MAX ){
 			super.setDesconto(desconto);
-		}
-}
+		} else
+		System.out.println("Favor inserir um desconto entre o intervalo:"+DESCONTO_MAX+"e"+DESCONTO_MIN);
+	}
 }

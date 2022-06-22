@@ -12,7 +12,6 @@ public abstract class Cliente implements Serializable {
 	private String nomeDeUsuario;
 	private String senha;
 	
-
 	private String email;
 	private List<Compra> compras;
 
@@ -35,8 +34,12 @@ public abstract class Cliente implements Serializable {
 
 	public String  getExtrato() {
 		StringBuilder builder = new StringBuilder();
+		builder.append("\nXULAMBS GAMES 03\n");
+		builder.append("-------------------------------------");
 		for (Compra compra : compras) {
-			builder.append(compra+"\n");
+			builder.append("\nExtrato em " + compra.getDataCompra() + "\n\n");
+			builder.append("cliente: "+nome+"\nNome de usuário: "+nomeDeUsuario+"\n"+compra+"\n");
+			builder.append("\n-------------------------------------");
 		}
 		return builder.toString();
 	}
