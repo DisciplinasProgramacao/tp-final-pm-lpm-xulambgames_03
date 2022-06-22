@@ -34,14 +34,16 @@ public class App {
             System.out.println("\n                  *****      Xulamb Games 03      *****                ");
             System.out.println("       ================================================================= ");
             System.out.println("      |                                                                 |");
-            System.out.println("      |    1. Cadastrar cliente                                         |");
-            System.out.println("      |    2. Cadastrar jogo                                            |");
-            System.out.println("      |    3. Lançar compra                                             |");
-            System.out.println("      |    4. Histórico de um cliente específico                        |");
-            System.out.println("      |    5. Valor mensal vendido                                      |");
-            System.out.println("      |    6. Valor médio das compras                                   |");
-            System.out.println("      |    7. Jogo mais vendido                                         |");
-            System.out.println("      |    7. Jogo menos vendido                                        |");
+            System.out.println("      |    1.  Cadastrar cliente                                        |");
+            System.out.println("      |    2.  Cadastrar jogo                                           |");
+            System.out.println("      |    3 . Lançar compra                                            |");
+            System.out.println("      |    4.  Histórico de um cliente específico                       |");
+            System.out.println("      |    5.  Valor mensal vendido                                     |");
+            System.out.println("      |    6.  Valor médio das compras                                  |");
+            System.out.println("      |    7.  Jogo mais vendido                                        |");
+            System.out.println("      |    8.  Jogo menos vendido                                       |");
+            System.out.println("      |    9.  Alterar o tipo do cliente                                |");
+            System.out.println("      |    10. Alterar a categoria do jogo                              |");
             System.out.println("      |                                                                 |");
             System.out.println("      |    0. Salvar e sair                                             |");
             System.out.println("      *=================================================================*\n");
@@ -72,20 +74,32 @@ public class App {
                     break;
 
                 case 5:
-                    valorMedioDasCompras();
+                    System.out.printf("O valor mensal vendido foi de: %.2f reais\n",valorMensalVendido());
 
                     break;
 
                 case 6:
-                   jogoMaisVendido();
+                System.out.printf("O valor medio das compras foi de: %.2f reais\n",valorMedioDasCompras());
 
                     break;
 
                 case 7:
-                    jogoMenosVendido();
+                    System.out.println("O jogo mais vendido foi: "+jogoMaisVendido()); 
 
                     break;
 
+                case 8:
+                System.out.println("O jogo menos vendido foi: "+jogoMenosVendido());
+                    
+                    break;
+
+                case 9:
+                    
+                    break;
+                
+                case 10:
+                    
+                    break;
 
                 case 0:
                     break;
@@ -122,6 +136,7 @@ public class App {
     }
 
     public static Jogo jogoMenosVendido() {
+
         int menosComprado = listaJogo.stream()
                     .mapToInt(j -> j.getNumComprados()).min().getAsInt();
 
@@ -146,36 +161,44 @@ public class App {
 
         for (Cliente cliente : listaCliente ) {
             if (nomeDeUsuario.equals(cliente.getNomeDeUsuario())) {
-                System.out.println("Usuário já cadastrado");
+                System.out.println("\nUsuário já cadastrado\n");
                 jaExistente = true;
                 break;
-            }
+            } else 
+             jaExistente = false;
         }
-
         } while(jaExistente);
-
-        
+        jaExistente = false;
 
         System.out.println("Informe sua senha: ");
         String senha = sc.nextLine();
-
+        
         while (!isValidPassword(senha)) {
             senhaInvalida();
             System.out.println("Informe sua senha: ");
             senha = sc.nextLine();
         }        
-
-        System.out.println("Informe seu email: ");
-        String email = sc.nextLine();
-
-        while (!isValidEmailAddressRegex(email)) {
+        String email;
+        do {
             System.out.println("Informe seu email: ");
-            email = sc.nextLine();
-        }
-
-        
+                email = sc.nextLine();
+                while (!isValidEmailAddressRegex(email)) { //Validar se o email é valido
+                    System.out.println("Informe seu email: ");
+                    email = sc.nextLine();
+                }
+            for (Cliente cliente : listaCliente ) { //Validar se o email ja existe
+                if (email.equals(cliente.getEmail())) {
+                    System.out.println("\nEmail já cadastrado\n");
+                    jaExistente = true;
+                    break;
+                } else
+                jaExistente = false;
+            } 
+        } while(jaExistente);
+   
         System.out.println("Informe qual o tipo do cliente: ");
         String tipo = sc.nextLine();
+
         try {
             Cliente cliente = ClienteFactory.creator(tipo);
             cliente.setNome(nome);
@@ -186,14 +209,27 @@ public class App {
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public static void cadastrarJogo() {
 
         sc.nextLine();
-        System.out.println("Informe o titulo do jogo ");
-        String titulo = sc.nextLine();
+        boolean jaExistente = false;
+        String titulo;
+        do {
+            System.out.println("Informe o titulo do jogo ");
+            titulo = sc.nextLine();
+
+        for (Jogo jogo : listaJogo ) {
+            if (titulo.equals(jogo.getTitulo())) {
+                System.out.println("\nJogo já cadastrado\n");
+                jaExistente = true;
+                break;
+            } else 
+             jaExistente = false;
+        }
+        } while(jaExistente);
+        jaExistente = false;
 
         System.out.println("Informe o preço do jogo: ");
         double preco = sc.nextDouble();
@@ -203,36 +239,36 @@ public class App {
         String genero = sc.nextLine();
 
         System.out.println("Informe a classificação indicativa: ");
-        int classificacaoIndicativa = sc.nextInt();       
+        int classificacaoIndicativa = sc.nextInt(); 
+        
+        sc.nextLine();
 
         System.out.println("Informe a produtora do jogo: ");
         String produtora = sc.nextLine();
 
-        sc.nextLine();
+        System.out.println("Informe a seguir a categoria do jogo: ");
+        String categoria = sc.nextLine();
         
         System.out.println("Informe o desconto do jogo: ");
         double desconto = sc.nextDouble();
 
-        System.out.println("Informe a seguir a categoria do jogo: ");
-        String categoria = sc.nextLine();
         try {
             Jogo jogo = JogoFactory.creator(categoria);
-        jogo.setTitulo(titulo);
-        jogo.setPrecoBase(preco);
-        jogo.setGenero(genero);
-        jogo.setClassificacaoIndicativa(classificacaoIndicativa);
-        jogo.setProdutora(produtora);
-        jogo.setDesconto(desconto);
-        listaJogo.add(jogo); 
+            jogo.setTitulo(titulo);
+            jogo.setPrecoBase(preco);
+            jogo.setGenero(genero);
+            jogo.setClassificacaoIndicativa(classificacaoIndicativa);
+            jogo.setProdutora(produtora);
+            jogo.setDesconto(desconto);
+            listaJogo.add(jogo); 
         } catch (TipoInvalidoExcecao e) {
         System.out.println(e.getMessage());
         }
-       
-        
     }
 
     public static void cadastrarCompra() {  
 
+        sc.nextLine();
         System.out.println("Qual o nome do usuário: ");
         String nomeUsuario = sc.nextLine();
 
@@ -240,7 +276,7 @@ public class App {
         for (Cliente iCliente : listaCliente) {
             if (iCliente.getNome().equals(nomeUsuario)){
                 cliente = iCliente;
-                break; // parar de percorrer
+                break; // parar de percorrer ao encontrar
             }
         } 
         if (cliente == null) {
@@ -253,7 +289,7 @@ public class App {
 
         Compra compra = new Compra(meioPagamento);
         
-        String s;
+        String s; //Apenas continua ao pressionar s
         do {
             addJogo(compra);
             System.out.println("Gostaria de adicionar outro jogo? s/n");
@@ -267,6 +303,7 @@ public class App {
 
     public static void historicoDoCliente() {
 
+        sc.nextLine();
         System.out.println("Qual o nome do usuário: ");
         String nomeUsuario = sc.nextLine();
 
@@ -274,7 +311,7 @@ public class App {
         for (Cliente iCliente : listaCliente) {
             if (iCliente.getNome().equals(nomeUsuario)){
                 cliente = iCliente;
-                break; // parar de percorrer
+                break; // parar de percorrer ao encontrar
             }
         } 
         if (cliente == null) {
@@ -282,7 +319,6 @@ public class App {
             return ;
         }
         System.out.println(cliente.getExtrato());
-
     }
 
     public static boolean isValidEmailAddressRegex(String email) {
@@ -336,6 +372,8 @@ public class App {
         }
         System.out.println("Jogo não encontrado");
     }
+
+   
 
 }
 
