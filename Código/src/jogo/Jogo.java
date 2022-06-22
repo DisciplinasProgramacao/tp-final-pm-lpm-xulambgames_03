@@ -2,6 +2,9 @@ package jogo;
 
 import java.io.Serializable;
 
+import excecao.TipoInvalidoExcecao;
+
+
 public abstract class Jogo implements Serializable {
 
 	private String titulo;
@@ -28,6 +31,16 @@ public abstract class Jogo implements Serializable {
 
 	public String getTitulo() {
 		return titulo;
+	}
+
+	public Jogo mudarCategoria(String categoria) throws TipoInvalidoExcecao { 
+		Jogo jogo = JogoFactory.creator(categoria);
+		jogo.setClassificacaoIndicativa(this.classificacaoIndicativa);
+		jogo.setPrecoBase(this.precoBase);
+		jogo.setProdutora(this.produtora);
+		jogo.setTitulo(this.titulo);
+		jogo.setNumComprados(this.numComprados);
+		return jogo;
 	}
 
 	public void comprarJogo(){
@@ -74,12 +87,16 @@ public abstract class Jogo implements Serializable {
 		this.produtora = produtora;
 	}
 
-	public void setDesconto(double desconto) {
+	public void setDesconto(double desconto) throws Exception {
 		this.desconto = desconto;
+	}
+
+	private void setNumComprados(int numComprados) {
+		this.numComprados = numComprados;
 	}
 
 	@Override
 	public String toString() {
-		return titulo;
+		return titulo+" Categoria:"+this.getClass().getSimpleName();
 	}
 }

@@ -1,4 +1,5 @@
 package compra;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,20 +28,20 @@ public class Compra implements Serializable {
 
 	public double calculaDesconto() {
 
-		boolean umOuMaisLancamentos = jogos.stream().map(j -> j instanceof JogoLancamento).count()>=1;
-		boolean doisPremiumsMaisUm = jogos.stream().map(j -> j instanceof JogoPremuim).count()>1 && jogos.size()>2; // Size, se já tiverem 2 premiums e a quantidade de jogos forem 3, satisfaz
-		boolean tresPremiums = jogos.stream().map(j -> j instanceof JogoPremuim).count()>2;
-		boolean tresRegularesUmAcima = jogos.stream().map(j -> j instanceof JogoRegular).count()>2 
-											&& jogos.stream().map(j -> j instanceof JogoPremuim || j instanceof JogoLancamento).count()>=1; 
-		boolean cincoRegulares = jogos.stream().map(j -> j instanceof JogoRegular).count()>4;
-		boolean doisPremiums = jogos.stream().map(j -> j instanceof JogoPremuim).count()>1;
-		boolean quatroRegulares = jogos.stream().map(j -> j instanceof JogoRegular).count()>=3;
+		boolean umOuMaisLancamentos = jogos.stream().filter(j -> j instanceof JogoLancamento).count() >= 1;
+		boolean doisPremiumsMaisUm = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 1
+				&& jogos.size() > 2; // Size, se já tiverem 2 premiums e a quantidade de jogos forem 3, satisfaz
+		boolean tresPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 2;
+		boolean tresRegularesUmAcima = jogos.stream().filter(j -> j instanceof JogoRegular).count() > 2
+				&& jogos.stream().filter(j -> j instanceof JogoPremuim || j instanceof JogoLancamento).count() >= 1;
+		boolean cincoRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() > 4;
+		boolean doisPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 1;
+		boolean quatroRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() >= 3;
 
-		if(umOuMaisLancamentos || doisPremiumsMaisUm || tresPremiums || tresRegularesUmAcima || cincoRegulares) {
+		if (umOuMaisLancamentos || doisPremiumsMaisUm || tresPremiums || tresRegularesUmAcima || cincoRegulares) {
 			desconto = 0.20;
-			
-		}
-		else if(doisPremiums || quatroRegulares){
+
+		} else if (doisPremiums || quatroRegulares) {
 			desconto = 0.10;
 
 		}
@@ -83,8 +84,9 @@ public class Compra implements Serializable {
 
 	@Override
 	public String toString() {
-		return  "jogos=" + jogos + "\ndesconto=" + desconto +  "\nmeioPagamento="
-				+ meioPagamento  + "\nvalorTotal=" + valorTotal + "\nvalorPago=" + valorPago;
+		return String.format("jogos= %s \ndesconto= %.2f \nmeioPagamento= %s \nvalorTotal= %.2f \nvalorPago= %.2f",
+				jogos, desconto, meioPagamento, valorTotal, valorPago);
+
 	}
 
 }

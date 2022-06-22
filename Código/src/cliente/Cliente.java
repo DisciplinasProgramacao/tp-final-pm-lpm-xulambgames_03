@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import compra.Compra;
+import excecao.TipoInvalidoExcecao;
 
 
 public abstract class Cliente implements Serializable {
@@ -38,10 +39,21 @@ public abstract class Cliente implements Serializable {
 		builder.append("-------------------------------------");
 		for (Compra compra : compras) {
 			builder.append("\nExtrato em " + compra.getDataCompra() + "\n\n");
-			builder.append("cliente: "+nome+"\nNome de usuário: "+nomeDeUsuario+"\n"+compra+"\n");
+			builder.append("cliente: "+nome+"\nNome de usuário: "+nomeDeUsuario+"\n"+compra+"\n"+"Tipo:"+this.getClass().getSimpleName());
 			builder.append("\n-------------------------------------");
 		}
 		return builder.toString();
+	}
+
+	public Cliente mudarTipo(String tipo) throws TipoInvalidoExcecao { 
+		Cliente cliente = ClienteFactory.creator(tipo);
+		cliente.setCompras(this.compras);
+		cliente.setEmail(this.email);
+		cliente.setNome(this.nome);
+		cliente.setNomeDeUsuario(this.nomeDeUsuario);
+		cliente.setSenha(this.senha);
+
+		return cliente;
 	}
 
 	public String getNome() {

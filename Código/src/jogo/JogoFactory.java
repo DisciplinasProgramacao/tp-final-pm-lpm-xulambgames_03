@@ -2,7 +2,7 @@ package jogo;
 
 import excecao.TipoInvalidoExcecao;
 
-public class JogoFactory { //Meia fábrica
+public class JogoFactory { //Factory method
 
 	public static Jogo creator(String tipo) throws TipoInvalidoExcecao {
 		Jogo jogo = null;

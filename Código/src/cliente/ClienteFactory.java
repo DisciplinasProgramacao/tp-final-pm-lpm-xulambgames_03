@@ -2,7 +2,7 @@ package cliente;
 
 import excecao.TipoInvalidoExcecao;
 
-public class ClienteFactory { //Meia fábrica
+public class ClienteFactory { //Factory method
 
 	public static Cliente creator( String tipo) throws TipoInvalidoExcecao {
 				

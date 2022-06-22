@@ -13,10 +13,9 @@ public class JogoRegular extends Jogo {
 		return super.getPrecoBase() * super.getDesconto();
 	}
 	@Override
-	public void setDesconto (double desconto){
+	public void setDesconto (double desconto) throws Exception{
 		if (desconto >= DESCONTO_MIN && desconto <= DESCONTO_MAX ){
 			super.setDesconto(desconto);
-		} else
-		System.out.println("Favor inserir um desconto entre o intervalo:"+DESCONTO_MAX+"e"+DESCONTO_MIN);
+		} else throw new Exception("Favor inserir um desconto entre o intervalo:"+DESCONTO_MAX+"e"+DESCONTO_MIN);
 	}
 }

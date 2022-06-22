@@ -2,6 +2,8 @@ package jogo;
 
 public class JogoPremuim extends Jogo {
 
+	private static final double DESCONTO = 0;
+
 	public JogoPremuim() {
 		super();
 	}
@@ -11,11 +13,8 @@ public class JogoPremuim extends Jogo {
 	}
 
 	@Override
-	public void setDesconto (double desconto){
-		if (desconto == 0) {
-			super.setDesconto(desconto);
-		} else
-		System.out.println("A categoria informada não possui desconto, favor digitar 0 !");
+	public void setDesconto (double desconto) throws Exception{
+			super.setDesconto(DESCONTO);
 	}
 	
 
