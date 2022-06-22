@@ -116,9 +116,12 @@ public class App {
 
     public static double valorMensalVendido() { // Valor do mes atual
         int mesReferencia = LocalDate.now().getMonthValue();
+        int anoReferencia = LocalDate.now().getYear();
+
         return listaCliente.stream()
                 .mapToDouble(
-                        c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue() == mesReferencia)
+                        c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue() == mesReferencia 
+                        && m.getDataCompra().getYear() == anoReferencia)
                                 .mapToDouble(Compra::getValorPago).sum())
                 .sum();
     }
