@@ -120,23 +120,23 @@ public class App {
         int mesReferencia = LocalDate.now().getMonthValue();
         int anoReferencia = LocalDate.now().getYear();
 
-        return listaCliente.stream()
-                .mapToDouble(
-                        c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue() == mesReferencia
-                                && m.getDataCompra().getYear() == anoReferencia)
-                                .mapToDouble(Compra::getValorPago).sum())
-                .sum();
+        return listaCliente.stream().mapToDouble(c -> c.getCompras().stream()
+                                    .filter(m -> m.getDataCompra().getMonthValue() == mesReferencia
+                                            && m.getDataCompra().getYear() == anoReferencia)
+                                                .mapToDouble(Compra::getValorPago).sum()).sum();
     }
 
-    public static double valorMedioDasCompras() { // Valor das vendas totais
-        double aux = 0.0;
+    public static double valorMedioDasCompras() { // Valor das vendas totais //Foi necessário criar duas streams
+        double valorTotal = 0.0;
+        int numCompras=0;
         if (listaCliente.size() != 0)
-            aux = listaCliente.stream().mapToDouble(c -> (c).getCompras().stream()
-                    .mapToDouble(Compra::getValorPago).sum()).average().getAsDouble();
-        return aux;
+            numCompras = listaCliente.stream().mapToInt(n -> n.getCompras().size()).sum();
+            valorTotal = listaCliente.stream().mapToDouble(c -> c.getCompras().stream()
+                    .mapToDouble(Compra::getValorPago).sum()).sum();
+        return valorTotal/numCompras;
     }
 
-    public static void jogoMaisVendido() {
+    public static void jogoMaisVendido() { 
         if (listaJogo.size() != 0) {
 
             int maisComprado = listaJogo.stream()
@@ -144,33 +144,29 @@ public class App {
 
             for (Jogo jogo : listaJogo) {
                 if (jogo.getNumComprados() == maisComprado) {
-                    System.out
-                            .println("O Jogo: " + jogo.getTitulo() + " foi comprado: " + jogo.getNumComprados()
-                                    + " vezes");
+                    System.out.println("O Jogo: " + jogo.getTitulo() +
+                     " foi comprado: " + jogo.getNumComprados() + " vezes");
                 }
             }
         } else {
             System.out.println("Não existe nenhum jogo!");
         }
-
     }
 
     public static void jogoMenosVendido() {
-        if (listaJogo.size() != 0) {
 
+        if (listaJogo.size() != 0) {
             int maisComprado = listaJogo.stream()
                     .mapToInt(j -> j.getNumComprados()).min().getAsInt();
 
             for (Jogo jogo : listaJogo) {
                 if (jogo.getNumComprados() == maisComprado) {
-                    System.out
-                            .println("O Jogo: " + jogo.getTitulo() + " foi comprado: " + jogo.getNumComprados()
-                                    + " vezes");
+                    System.out.println("O Jogo: " + jogo.getTitulo() + " foi comprado: " 
+                                                            + jogo.getNumComprados() + " vezes");
                 }
             }
-        } else {
+        } else 
             System.out.println("Não existe nenhum jogo!");
-        }
     }
 
     public static void cadastrarCliente() {
@@ -181,13 +177,14 @@ public class App {
         String tipo = sc.nextLine();
         try {
             Cliente cliente = ClienteFactory.creator(tipo);
-
+            
             System.out.println("Informe o seu nome: ");
             String nome = sc.nextLine();
 
             boolean validador = false;
             String nomeDeUsuario;
             do {
+                validador=false;
                 System.out.println("Informe o seu nome de usuário: ");
                 nomeDeUsuario = sc.nextLine();
 
@@ -196,8 +193,11 @@ public class App {
                         System.out.println("\nUsuário já cadastrado\n");
                         validador = true;
                         break;
-                    } else
-                        validador = false;                                                                                                                                                         
+                    }                                                                                                                                                  
+                }
+                if(validarStringVazia(nomeDeUsuario)){
+                    System.out.println("Favor não inserir um nome vazio");
+                    validador=true;
                 }
             } while (validador);
             validador = false;
@@ -233,6 +233,7 @@ public class App {
             cliente.setNomeDeUsuario(nomeDeUsuario);
             cliente.setSenha(senha);
             listaCliente.add(cliente);
+            System.out.println("\nCliente cadastrado!\n");
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         }
@@ -248,6 +249,7 @@ public class App {
         String categoria = sc.nextLine();
         try {
             Jogo jogo = JogoFactory.creator(categoria);
+            
             do {
                 System.out.println("Informe o titulo do jogo ");
                 titulo = sc.nextLine();
@@ -259,6 +261,10 @@ public class App {
                         break;
                     } else
                         validador = false;
+                }
+                if(validarStringVazia(titulo)){
+                    System.out.println("Favor não inserir um nome vazio");
+                    validador=true;
                 }
             } while (validador);
             validador = false;
@@ -288,12 +294,23 @@ public class App {
             jogo.setProdutora(produtora);
             jogo.setDesconto(desconto);
             listaJogo.add(jogo);
+            System.out.println("\nJogo cadastrado!\n");
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    public static boolean validarStringVazia(String dado){
+        String dados[] = dado.split("");
+        int qntEspacos = 0;
+
+        for (String string : dados) {
+            if (string.equals(" ")) {
+                qntEspacos++;
+            } 
+        } return dado.length()==qntEspacos;
     }
 
     public static void cadastrarCompra() {
@@ -339,7 +356,7 @@ public class App {
             return;
         }
         int posicao = listaCliente.indexOf(cliente);
-        System.out.println("Qual o novo tipo será atribuido ao cliente?");
+        System.out.println("Qual o novo tipo que será atribuido ao cliente?");
         String tipo = sc.nextLine();
         try {
             cliente = cliente.mudarTipo(tipo);
@@ -452,22 +469,22 @@ public class App {
         return jogo;
     }
 
-    public static boolean validarOpcao(String string) {
+    public static boolean validarOpcao(String opcao) {
         boolean ehValida = false;
         String expression = "[0-9]+";
 
-        if (string.matches(expression)) {
+        if (opcao.matches(expression)) {
             ehValida = true;
+        if (Integer.parseInt(opcao) > 10 || Integer.parseInt(opcao) < 0){
+            System.out.println("Favor inserir um valor entre 0 e 10!");
+        }
         } else
             System.out.println("\nFavor inserir uma opção entre 0 e 10!\n");
         try {
-            Thread.sleep(3000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         return ehValida;
-
     }
 }

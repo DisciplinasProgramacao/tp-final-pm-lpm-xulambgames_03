@@ -12,7 +12,6 @@ public abstract class Cliente implements Serializable {
 	private String nome;
 	private String nomeDeUsuario;
 	private String senha;
-	
 	private String email;
 	private List<Compra> compras;
 
@@ -26,6 +25,7 @@ public abstract class Cliente implements Serializable {
 	public void addCompras(Compra compra) { // Caulando o desconto do cliente, pós calculo do desconto da compra.
 		compra.setValorPago(calcularValorCompras(compra));
 		compras.add(compra);
+		compra.setTipoCliente(this.getClass().getSimpleName());
 	}
 
 	public double calcularValorCompras(Compra compra) {
@@ -39,7 +39,7 @@ public abstract class Cliente implements Serializable {
 		builder.append("-------------------------------------");
 		for (Compra compra : compras) {
 			builder.append("\nExtrato em " + compra.getDataCompra() + "\n\n");
-			builder.append("cliente: "+nome+"\nNome de usuário: "+nomeDeUsuario+"\n"+compra+"\n"+"Tipo:"+this.getClass().getSimpleName());
+			builder.append("cliente: "+nome+"\nNome de usuário: "+nomeDeUsuario+"\n"+compra+"\n"+"Tipo:"+compra.getTipoCliente());
 			builder.append("\n-------------------------------------");
 		}
 		return builder.toString();

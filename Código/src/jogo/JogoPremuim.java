@@ -2,7 +2,7 @@ package jogo;
 
 public class JogoPremuim extends Jogo {
 
-	private static final double DESCONTO = 0;
+	private static final double DESCONTO = 0.0;
 
 	public JogoPremuim() {
 		super();

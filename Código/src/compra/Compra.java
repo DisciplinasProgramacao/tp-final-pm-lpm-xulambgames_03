@@ -17,6 +17,8 @@ public class Compra implements Serializable {
 	private LocalDate dataCompra;
 	private String meioPagamento;
 	private double valorPago;
+	private String tipoCliente;
+
 
 	public Compra(String meioPagamento) {
 		jogos = new ArrayList<>();
@@ -28,17 +30,17 @@ public class Compra implements Serializable {
 
 	public double calculaDesconto() {
 
-		boolean umOuMaisLancamentos = jogos.stream().filter(j -> j instanceof JogoLancamento).count() >= 1;
-		boolean doisPremiumsMaisUm = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 1
-				&& jogos.size() > 2; // Size, se já tiverem 2 premiums e a quantidade de jogos forem 3, satisfaz
-		boolean tresPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 2;
-		boolean tresRegularesUmAcima = jogos.stream().filter(j -> j instanceof JogoRegular).count() > 2
-				&& jogos.stream().filter(j -> j instanceof JogoPremuim || j instanceof JogoLancamento).count() >= 1;
-		boolean cincoRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() > 4;
-		boolean doisPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() > 1;
-		boolean quatroRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() >= 3;
+		boolean doisOuMaisLancamentos = jogos.stream().filter(j -> j instanceof JogoLancamento).count() > 1;
+		boolean doisPremiumsMaisUm = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 2
+				&& jogos.size() == 3; // Size, se já tiverem verifica se existe 1 jogo a mais dos 2 premiums
+		boolean tresPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 3;
+		boolean tresRegularesUmAcima = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 3
+				&& jogos.stream().filter(j -> j instanceof JogoPremuim || j instanceof JogoLancamento).count() == 1;
+		boolean cincoRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 5;
+		boolean doisPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 2;
+		boolean quatroRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 4;
 
-		if (umOuMaisLancamentos || doisPremiumsMaisUm || tresPremiums || tresRegularesUmAcima || cincoRegulares) {
+		if (doisOuMaisLancamentos || doisPremiumsMaisUm || tresPremiums || tresRegularesUmAcima || cincoRegulares) {
 			desconto = 0.20;
 
 		} else if (doisPremiums || quatroRegulares) {
@@ -51,7 +53,7 @@ public class Compra implements Serializable {
 	public void adicionarJogo(Jogo jogo) {
 		jogos.add(jogo);
 		this.valorTotal += jogo.calcularPreco();
-		jogo.comprarJogo();
+		jogo.numVendas();
 	}
 
 	public List<Jogo> getJogos() {
@@ -80,6 +82,14 @@ public class Compra implements Serializable {
 
 	public void setValorPago(double valorPago) {
 		this.valorPago = valorPago;
+	}
+
+	public String getTipoCliente() {
+		return tipoCliente;
+	}
+
+	public void setTipoCliente(String tipoCliente) {
+		this.tipoCliente = tipoCliente;
 	}
 
 	@Override

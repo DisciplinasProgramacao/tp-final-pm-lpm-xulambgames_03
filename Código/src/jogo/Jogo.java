@@ -1,9 +1,7 @@
 package jogo;
 
 import java.io.Serializable;
-
 import excecao.TipoInvalidoExcecao;
-
 
 public abstract class Jogo implements Serializable {
 
@@ -15,10 +13,6 @@ public abstract class Jogo implements Serializable {
 	private int numComprados;
 	private double desconto;
 
-	public double getDesconto() {
-		return desconto;
-	}
-
 	public Jogo(){
 		this.numComprados = 0;
 	}
@@ -28,10 +22,6 @@ public abstract class Jogo implements Serializable {
 	 */
 	
 	public abstract double calcularPreco();
-
-	public String getTitulo() {
-		return titulo;
-	}
 
 	public Jogo mudarCategoria(String categoria) throws TipoInvalidoExcecao { 
 		Jogo jogo = JogoFactory.creator(categoria);
@@ -43,12 +33,16 @@ public abstract class Jogo implements Serializable {
 		return jogo;
 	}
 
-	public void comprarJogo(){
+	public void numVendas(){
 		numComprados++;
 	}
 
 	public int getNumComprados() {
 		return numComprados;
+	}
+
+	public String getTitulo() {
+		return titulo;
 	}
 
 	public void setTitulo(String titulo) {
@@ -87,6 +81,10 @@ public abstract class Jogo implements Serializable {
 		this.produtora = produtora;
 	}
 
+	public double getDesconto() {
+		return desconto;
+	}
+
 	public void setDesconto(double desconto) throws Exception {
 		this.desconto = desconto;
 	}
@@ -94,6 +92,8 @@ public abstract class Jogo implements Serializable {
 	private void setNumComprados(int numComprados) {
 		this.numComprados = numComprados;
 	}
+
+	
 
 	@Override
 	public String toString() {
