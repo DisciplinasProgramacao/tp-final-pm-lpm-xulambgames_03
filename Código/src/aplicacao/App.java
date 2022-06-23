@@ -20,7 +20,7 @@ public class App {
     static List<Cliente> listaCliente;
     static List<Jogo> listaJogo;
 
-    private static int opcao;
+    private static String opcao;
     private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
@@ -50,68 +50,70 @@ public class App {
             System.out.println("      *=================================================================*\n");
             System.out.print("Informe uma opcao: ");
 
-            opcao = sc.nextInt();
+            opcao = sc.next();
             System.out.println("");
+            if (validarOpcao(opcao))
 
-            switch (opcao) {
+                switch (Integer.parseInt(opcao)) {
+                    case 1:
+                        cadastrarCliente();
+                        break;
 
-                case 1:
-                    cadastrarCliente();
-                    break;
+                    case 2:
+                        cadastrarJogo();
 
-                case 2:
-                    cadastrarJogo();
+                        break;
 
-                    break;
+                    case 3:
+                        cadastrarCompra();
 
-                case 3:
-                    cadastrarCompra();
+                        break;
 
-                    break;
+                    case 4:
+                        historicoDoCliente();
 
-                case 4:
-                    historicoDoCliente();
+                        break;
 
-                    break;
+                    case 5:
+                        System.out.printf("O valor mensal vendido foi de: %.2f reais\n", valorMensalVendido());
 
-                case 5:
-                    System.out.printf("O valor mensal vendido foi de: %.2f reais\n", valorMensalVendido());
+                        break;
 
-                    break;
+                    case 6:
+                        System.out.printf("O valor medio das compras foi de: %.2f reais\n", valorMedioDasCompras());
 
-                case 6:
-                    System.out.printf("O valor medio das compras foi de: %.2f reais\n", valorMedioDasCompras());
+                        break;
 
-                    break;
+                    case 7:
+                        jogoMaisVendido();
 
-                case 7:
-                    jogoMaisVendido();
+                        break;
 
-                    break;
+                    case 8:
+                        jogoMenosVendido();
 
-                case 8:
-                    jogoMenosVendido();
+                        break;
 
-                    break;
+                    case 9:
+                        alterarTipoCliente();
 
-                case 9:
-                    alterarTipoCliente();
-                    
-                    break;
+                        break;
 
-                case 10:
-                    alterarCategoriaJogo();
+                    case 10:
+                        alterarCategoriaJogo();
 
-                    break;
+                        break;
 
-                case 0:
-                    break;
-            }
+                    case 0:
+                        break;
+                }
 
-        } while (opcao != 0);
+        } while (!opcao.equals("0"));
 
         daoJogo.salvarTodos(listaJogo);
         daoCliente.salvarTodos(listaCliente);
+        System.out.println("Sistema encerrado!");
+
     }
 
     public static double valorMensalVendido() { // Valor do mes atual
@@ -120,39 +122,55 @@ public class App {
 
         return listaCliente.stream()
                 .mapToDouble(
-                        c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue() == mesReferencia 
-                        && m.getDataCompra().getYear() == anoReferencia)
+                        c -> (c).getCompras().stream().filter(m -> m.getDataCompra().getMonthValue() == mesReferencia
+                                && m.getDataCompra().getYear() == anoReferencia)
                                 .mapToDouble(Compra::getValorPago).sum())
                 .sum();
     }
 
     public static double valorMedioDasCompras() { // Valor das vendas totais
-        return listaCliente.stream().mapToDouble(c -> (c).getCompras().stream()
-                .mapToDouble(Compra::getValorPago).sum()).average().getAsDouble();
+        double aux = 0.0;
+        if (listaCliente.size() != 0)
+            aux = listaCliente.stream().mapToDouble(c -> (c).getCompras().stream()
+                    .mapToDouble(Compra::getValorPago).sum()).average().getAsDouble();
+        return aux;
     }
 
     public static void jogoMaisVendido() {
+        if (listaJogo.size() != 0) {
 
-        int maisComprado = listaJogo.stream()
-                .mapToInt(j -> j.getNumComprados()).max().getAsInt();
+            int maisComprado = listaJogo.stream()
+                    .mapToInt(j -> j.getNumComprados()).max().getAsInt();
 
-        for (Jogo jogo : listaJogo) {
-            if (jogo.getNumComprados() == maisComprado){
-                System.out.println("O Jogo: " + jogo.getTitulo()+" foi comprado: " + jogo.getNumComprados()+" vezes");
+            for (Jogo jogo : listaJogo) {
+                if (jogo.getNumComprados() == maisComprado) {
+                    System.out
+                            .println("O Jogo: " + jogo.getTitulo() + " foi comprado: " + jogo.getNumComprados()
+                                    + " vezes");
+                }
             }
+        } else {
+            System.out.println("Não existe nenhum jogo!");
         }
+
     }
 
     public static void jogoMenosVendido() {
+        if (listaJogo.size() != 0) {
 
-        int maisComprado = listaJogo.stream()
-        .mapToInt(j -> j.getNumComprados()).min().getAsInt();
+            int maisComprado = listaJogo.stream()
+                    .mapToInt(j -> j.getNumComprados()).min().getAsInt();
 
-        for (Jogo jogo : listaJogo) {
-            if (jogo.getNumComprados() == maisComprado){
-                System.out.println("O Jogo: " + jogo.getTitulo()+" foi comprado: " + jogo.getNumComprados()+" vezes");
-        }   
-    }
+            for (Jogo jogo : listaJogo) {
+                if (jogo.getNumComprados() == maisComprado) {
+                    System.out
+                            .println("O Jogo: " + jogo.getTitulo() + " foi comprado: " + jogo.getNumComprados()
+                                    + " vezes");
+                }
+            }
+        } else {
+            System.out.println("Não existe nenhum jogo!");
+        }
     }
 
     public static void cadastrarCliente() {
@@ -179,7 +197,7 @@ public class App {
                         validador = true;
                         break;
                     } else
-                        validador = false;
+                        validador = false;                                                                                                                                                         
                 }
             } while (validador);
             validador = false;
@@ -314,17 +332,17 @@ public class App {
     }
 
     public static void alterarTipoCliente() {
-        
+
         Cliente cliente = encontrarCliente();
         if (cliente == null) {
             System.out.println("Cliente não encontrado");
-            return ;
+            return;
         }
         int posicao = listaCliente.indexOf(cliente);
         System.out.println("Qual o novo tipo será atribuido ao cliente?");
         String tipo = sc.nextLine();
         try {
-            cliente=cliente.mudarTipo(tipo);
+            cliente = cliente.mudarTipo(tipo);
             listaCliente.remove(posicao);
             listaCliente.add(posicao, cliente);
         } catch (TipoInvalidoExcecao e) {
@@ -335,16 +353,16 @@ public class App {
     public static void alterarCategoriaJogo() {
         sc.nextLine();
         Jogo jogo = encontrarJogo();
-       
+
         if (jogo == null) {
             System.out.println("Jogo não encontrado");
-            return ;
+            return;
         }
         int posicao = listaJogo.indexOf(jogo);
         System.out.println("Qual a nova categoria que será atribuida ao jogo?");
         String categoria = sc.nextLine();
         try {
-            jogo=jogo.mudarCategoria(categoria);
+            jogo = jogo.mudarCategoria(categoria);
             System.out.println("Qual o novo desconto a ser aplicado?");
             double desconto = sc.nextDouble();
             jogo.setDesconto(desconto);
@@ -353,7 +371,7 @@ public class App {
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
-           System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -382,7 +400,8 @@ public class App {
                 cliente = iCliente;
                 break; // parar de percorrer ao encontrar
             }
-        } return cliente;
+        }
+        return cliente;
     }
 
     public static boolean isValidPassword(String senha) {
@@ -411,26 +430,44 @@ public class App {
     }
 
     public static void addJogo(Compra compra) {
-        
+
         Jogo jogo = encontrarJogo();
-            if (jogo!=null) {
-                compra.adicionarJogo(jogo);
-            } else
-                System.out.println("Jogo não encontrado");
+        if (jogo != null) {
+            compra.adicionarJogo(jogo);
+        } else
+            System.out.println("Jogo não encontrado");
     }
 
-    public static Jogo encontrarJogo(){
+    public static Jogo encontrarJogo() {
         Jogo jogo = null;
         System.out.println("Qual o titulo do jogo: ");
         String tituloJogo = sc.nextLine();
 
         for (Jogo jogos : listaJogo) {
             if (jogos.getTitulo().equals(tituloJogo)) {
-                jogo=jogos;
-                break; 
+                jogo = jogos;
+                break;
             }
         }
         return jogo;
     }
 
+    public static boolean validarOpcao(String string) {
+        boolean ehValida = false;
+        String expression = "[0-9]+";
+
+        if (string.matches(expression)) {
+            ehValida = true;
+        } else
+            System.out.println("\nFavor inserir uma opção entre 0 e 10!\n");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return ehValida;
+
+    }
 }
