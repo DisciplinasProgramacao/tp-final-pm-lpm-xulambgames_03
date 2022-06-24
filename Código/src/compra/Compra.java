@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jogo.Jogo;
 import jogo.JogoLancamento;
-import jogo.JogoPremuim;
+import jogo.JogoPremium;
 import jogo.JogoRegular;
 
 public class Compra implements Serializable {
@@ -19,7 +19,6 @@ public class Compra implements Serializable {
 	private double valorPago;
 	private String tipoCliente;
 
-
 	public Compra(String meioPagamento) {
 		jogos = new ArrayList<>();
 		this.desconto = 0.0;
@@ -31,13 +30,13 @@ public class Compra implements Serializable {
 	public double calculaDesconto() {
 
 		boolean doisOuMaisLancamentos = jogos.stream().filter(j -> j instanceof JogoLancamento).count() > 1;
-		boolean doisPremiumsMaisUm = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 2
+		boolean doisPremiumsMaisUm = jogos.stream().filter(j -> j instanceof JogoPremium).count() == 2
 				&& jogos.size() == 3; // Size, se já tiverem verifica se existe 1 jogo a mais dos 2 premiums
-		boolean tresPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 3;
+		boolean tresPremiums = jogos.stream().filter(j -> j instanceof JogoPremium).count() == 3;
 		boolean tresRegularesUmAcima = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 3
-				&& jogos.stream().filter(j -> j instanceof JogoPremuim || j instanceof JogoLancamento).count() == 1;
+				&& jogos.stream().filter(j -> j instanceof JogoPremium || j instanceof JogoLancamento).count() == 1;
 		boolean cincoRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 5;
-		boolean doisPremiums = jogos.stream().filter(j -> j instanceof JogoPremuim).count() == 2;
+		boolean doisPremiums = jogos.stream().filter(j -> j instanceof JogoPremium).count() == 2;
 		boolean quatroRegulares = jogos.stream().filter(j -> j instanceof JogoRegular).count() == 4;
 
 		if (doisOuMaisLancamentos || doisPremiumsMaisUm || tresPremiums || tresRegularesUmAcima || cincoRegulares) {
@@ -45,7 +44,6 @@ public class Compra implements Serializable {
 
 		} else if (doisPremiums || quatroRegulares) {
 			desconto = 0.10;
-
 		}
 		return desconto;
 	}

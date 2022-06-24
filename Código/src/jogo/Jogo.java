@@ -93,8 +93,6 @@ public abstract class Jogo implements Serializable {
 		this.numComprados = numComprados;
 	}
 
-	
-
 	@Override
 	public String toString() {
 		return titulo+" Categoria:"+this.getClass().getSimpleName();

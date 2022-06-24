@@ -16,7 +16,7 @@ public class JogoFactory { //Factory method
 			jogo = new JogoLancamento();
 		}
 		else if (tipo.equalsIgnoreCase("premium")) {
-			jogo = new JogoPremuim();
+			jogo = new JogoPremium();
 		}
 		else {
 			throw new TipoInvalidoExcecao(" O " +tipo+ " não é um tipo válido para jogo");

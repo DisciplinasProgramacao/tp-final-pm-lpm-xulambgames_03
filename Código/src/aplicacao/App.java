@@ -286,6 +286,7 @@ public class App {
 
             System.out.println("Informe o desconto ou acréscimo do jogo: ");
             System.out.println("Caso a categoria seja Premium ou lançamento, basta digitar qualquer valor, premium não possui desconto e lançamento terá 10% de acréscimo automaticamente ");
+            System.out.println("Caso o jogo seja regular, insira um valor entre 0,7 e 1, caseo seja promocao entre 0,3 e 0,5.");
             double desconto = sc.nextDouble();
 
             jogo.setTitulo(titulo);
@@ -357,13 +358,13 @@ public class App {
             return;
         }
         int posicao = listaCliente.indexOf(cliente);
-        System.out.println("Qual o novo tipo que será atribuido ao cliente?");
+        System.out.println("Qual o novo tipo que será atribuido ao cliente entre Cadastrado, empolgado e fanático?");
         String tipo = sc.nextLine();
         try {
             cliente = cliente.mudarTipo(tipo);
             listaCliente.remove(posicao);
             listaCliente.add(posicao, cliente);
-            System.out.println("\nCompra cadastrada\n");
+            System.out.println("\nAlteração cadastrada\n");
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         }
@@ -378,15 +379,18 @@ public class App {
             return;
         }
         int posicao = listaJogo.indexOf(jogo);
-        System.out.println("Qual a nova categoria que será atribuida ao jogo?");
+        System.out.println("Qual a nova categoria do jogo entre lancamento, premium, regular e promocao?: ");
         String categoria = sc.nextLine();
         try {
             jogo = jogo.mudarCategoria(categoria);
-            System.out.println("Qual o novo desconto a ser aplicado?");
+            System.out.println("Informe o desconto ou acréscimo do jogo: ");
+            System.out.println("Caso a categoria seja Premium ou lançamento, basta digitar qualquer valor, premium não possui desconto e lançamento terá 10% de acréscimo automaticamente ");
+            System.out.println("Caso o jogo seja regular, insira um valor entre 0,7 e 1, caseo seja promocao entre 0,3 e 0,5.");
             double desconto = sc.nextDouble();
             jogo.setDesconto(desconto);
             listaJogo.remove(posicao);
             listaJogo.add(posicao, jogo);
+            System.out.println("\nAlteração cadastrada\n");
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {

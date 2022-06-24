@@ -6,7 +6,6 @@ import java.util.List;
 import compra.Compra;
 import excecao.TipoInvalidoExcecao;
 
-
 public abstract class Cliente implements Serializable {
 
 	private String nome;
