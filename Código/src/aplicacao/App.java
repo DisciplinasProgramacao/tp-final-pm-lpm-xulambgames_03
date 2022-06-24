@@ -173,7 +173,7 @@ public class App {
 
         sc.nextLine();
 
-        System.out.println("Informe qual o tipo do cliente: ");
+        System.out.println("Informe qual o tipo do cliente entre Cadastrado, Empolgado e Fanatico: ");
         String tipo = sc.nextLine();
         try {
             Cliente cliente = ClienteFactory.creator(tipo);
@@ -245,7 +245,7 @@ public class App {
         boolean validador = false;
         String titulo;
 
-        System.out.println("Informe a seguir a categoria do jogo: ");
+        System.out.println("Informe a seguir a categoria do jogo entre lancamento, premium, regular e promocao: ");
         String categoria = sc.nextLine();
         try {
             Jogo jogo = JogoFactory.creator(categoria);
@@ -284,7 +284,8 @@ public class App {
             System.out.println("Informe a produtora do jogo: ");
             String produtora = sc.nextLine();
 
-            System.out.println("Informe o desconto do jogo: ");
+            System.out.println("Informe o desconto ou acréscimo do jogo: ");
+            System.out.println("Caso a categoria seja Premium ou lançamento, basta digitar qualquer valor, premium não possui desconto e lançamento terá 10% de acréscimo automaticamente ");
             double desconto = sc.nextDouble();
 
             jogo.setTitulo(titulo);
@@ -362,6 +363,7 @@ public class App {
             cliente = cliente.mudarTipo(tipo);
             listaCliente.remove(posicao);
             listaCliente.add(posicao, cliente);
+            System.out.println("\nCompra cadastrada\n");
         } catch (TipoInvalidoExcecao e) {
             System.out.println(e.getMessage());
         }
