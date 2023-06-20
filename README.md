@@ -1,9 +1,9 @@
 # Loja de jogos digitais
 
 ### XulambGames é uma pequena loja de jogos digitais que está procurando se firmar no mercado. O primeiro
-passo para isto é uma proposta inovadora em sua maneira simplificada em disponibilizar e vender os jogos. Sua equipe
-vai desenvolver a primeira versão do sistema de software que automatize o processo da loja. A equipe de produto
-levantou os requisitos abaixo e seu time de desenvolvimento precisa implementar um sistema que os atenda:
+### passo para isto é uma proposta inovadora em sua maneira simplificada em disponibilizar e vender os jogos. Sua equipe
+### vai desenvolver a primeira versão do sistema de software que automatize o processo da loja. A equipe de produto
+### levantou os requisitos abaixo e seu time de desenvolvimento precisa implementar um sistema que os atenda:
 
 
 • Os clientes precisam o cadastro de nome, nome de usuário e senha. Eles serão divididos em três tipos:
